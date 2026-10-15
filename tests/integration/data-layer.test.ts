@@ -9,7 +9,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 const dbFile = path.join(tmpdir(), `soknadsassistenten-test-${Date.now()}.db`);
 process.env.DATABASE_URL = `file:${dbFile}`;
 
-const CASE = path.join(process.cwd(), "fixtures", "cases", "a-it-support-nb");
+const CASE = path.join(process.cwd(), "fixtures", "cases", "a-it-support");
 const cvText = readFileSync(path.join(CASE, "cv.txt"), "utf8");
 
 let db: typeof import("@/lib/db").db;
@@ -26,7 +26,7 @@ async function createUserWithAnalysis(email: string) {
       cvTextEnc: crypto.encrypt(cvText),
       postingEnc: crypto.encrypt("Vi søker en IT-student"),
       keywordsEnc: crypto.encrypt("[]"),
-      language: "nb",
+      language: "en",
       tone: "formal",
       gapAnalysisEnc: crypto.encrypt(readFileSync(path.join(CASE, "gap-analysis.json"), "utf8")),
       provider: "mock",

@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { CoverLetter, GapAnalysis, Language, Tone } from "@/lib/ai/schemas";
+import type { CoverLetter, GapAnalysis, Tone } from "@/lib/ai/schemas";
 import { decrypt, decryptJson } from "@/lib/crypto";
 import { db } from "@/lib/db";
 
@@ -20,7 +20,6 @@ export type AnalysisDetail = AnalysisSummary & {
   cvText: string;
   posting: string;
   keywords: string[];
-  language: Language;
   tone: Tone;
   coverLetter: CoverLetter | null;
   model: string;
@@ -54,7 +53,6 @@ export async function getAnalysis(userId: string, id: string): Promise<AnalysisD
     cvText: decrypt(row.cvTextEnc),
     posting: decrypt(row.postingEnc),
     keywords: JSON.parse(decrypt(row.keywordsEnc)) as string[],
-    language: row.language as Language,
     tone: row.tone as Tone,
     gapAnalysis: row.gapAnalysisEnc ? decryptJson<GapAnalysis>(row.gapAnalysisEnc) : null,
     coverLetter: row.coverLetterEnc ? decryptJson<CoverLetter>(row.coverLetterEnc) : null,

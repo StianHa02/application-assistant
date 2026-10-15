@@ -325,3 +325,22 @@ Where the finished v1 differs from the plan above, and why:
 | — | Next.js 16 "Cache Components" turned off | Not needed for a local app, and it requires Suspense boundaries around every session read. |
 
 **Live API check (2026-10-15):** `npm run eval` with `claude-haiku-5-5` passed 18/18 checks. All expected missing and covered requirements were found in all 3 test cases, and 18/18 CV quotes were verified. The gap analysis took 15–25 seconds per case.
+
+## Frontend revamp (2026-10-15)
+
+- **English only:** the i18n system, the NO/EN switch and the response-language choice are removed. The UI and AI answers are always in English. Test cases A and C were rewritten in English, and the fixture folders renamed to `a-it-support`, `b-data-analyst` and `c-marketing`.
+- **Light mode only:** `next-themes` and the dark theme are removed.
+- **Header and colours:** a larger teal header (echo's primary colour, `#008fa3`) with white text, the name "Application Assistant", no logo badge and no user name. The current page is marked with a white pill, and the buttons are echo's yellow. The page background is a very light teal (`#e6f4f6`). The footer is removed. The privacy notice ("the CV text is sent to Anthropic") now sits on the New analysis form in live mode.
+- **Analysis page:** the three equal columns are replaced by a requirement list (grouped Missing / Partial / Covered, arrow-key navigation) and a detail panel (why, next step, CV and posting excerpts with the highlight in context). The full documents open in a side drawer. ATS feedback has its own tab.
+- **Eval on the English test cases:** A and C 6/6. B 6/6 in 2 of 3 runs; one run rated "shipping/seafood knowledge" as partial instead of missing.
+
+## Design refinement (2026-10-15)
+
+- **Scrolling on the analysis page:** the requirement list no longer has its own scroll area or sticky position, and the header is no longer sticky. Both columns scroll with the page; picking a requirement low in the list scrolls the detail panel into view if its top is off-screen. The "Your draft" box on the cover-letter tab is no longer sticky either, and lines up with the first paragraph.
+- **Less generic look:** new fonts (Schibsted Grotesk for headings, Work Sans for text, IBM Plex Mono for CV text), slightly rounded buttons instead of pills, white "paper" cards with a soft shadow. The teal header, light teal background and yellow buttons stay.
+- **Status colours as highlighter pens:** pink = missing, yellow = partial, green = covered. CV quotes are marked with a highlighter stroke in the requirement's status colour.
+- **Score:** the score ring is replaced by "73% match", a bar split into covered / partial / missing with the counts written out, and one line explaining the weighting (must-haves count double, partial counts half).
+- **Tabs:** a segmented control (Gap analysis / ATS feedback / Cover letter) instead of underlined tabs.
+- **Less text in the detail panel:** the posting excerpt was removed; "View full posting" still shows it in context.
+- **Home page:** shows one real requirement from test case A as an example of the result, and the three rules the AI follows.
+- **Rewrite one paragraph:** each cover-letter paragraph has a "Rewrite" button. The new `rewriteParagraph` provider method sends the whole letter with the chosen paragraph marked, and gets back only that paragraph (`REWRITE_PARAGRAPH_SYSTEM`, `PROMPT_VERSION` 2026-10-15.3). Demo mode returns a labelled placeholder instead of pretending to rewrite.

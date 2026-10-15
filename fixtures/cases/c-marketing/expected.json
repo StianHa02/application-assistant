@@ -1,0 +1,13 @@
+{
+  "description": "Business student applying for a marketing internship. Strong on organic social media content, but missing paid advertising, video editing and newsletters.",
+  "tone": "conversational",
+  "expectedMissing": [
+    { "label": "Google Ads or Meta advertising", "keywords": ["google ads", "meta"] },
+    { "label": "Video editing", "keywords": ["video"] },
+    { "label": "Newsletters / Mailchimp", "keywords": ["newsletter", "mailchimp"] }
+  ],
+  "expectedCovered": [
+    { "label": "Studies marketing or business", "keywords": ["studies marketing"] },
+    { "label": "Content for social media", "keywords": ["social media"] }
+  ]
+}

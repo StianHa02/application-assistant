@@ -1,82 +1,99 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
-import { useActionState } from "react";
+import { FileUp, Loader2 } from "lucide-react";
+import { useActionState, useState } from "react";
 
 import { createAnalysis, type CreateAnalysisState } from "@/app/actions/analyses";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { FieldHint, FormError, Input, Label, Select, Textarea } from "@/components/ui/form";
-import { useI18n } from "@/i18n/client";
+import { AI_ERRORS, UPLOAD_ERRORS } from "@/lib/messages";
 
-export function NewAnalysisForm({ demoMode }: { demoMode: boolean }) {
-  const { t, locale } = useI18n();
+export function NewAnalysisForm({ demoMode, model }: { demoMode: boolean; model: string }) {
   const [state, action, pending] = useActionState<CreateAnalysisState, FormData>(createAnalysis, undefined);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const error = state?.error
     ? state.error.kind === "form"
-      ? t.newAnalysis.errors[state.error.key]
-      : t.aiErrors[state.error.key]
+      ? UPLOAD_ERRORS[state.error.key]
+      : AI_ERRORS[state.error.key]
     : undefined;
 
   return (
-    <form action={action} className="space-y-6">
-      {demoMode && (
-        <div className="rounded-lg border border-secondary-dark bg-secondary/40 px-4 py-3 text-sm">
-          <p>{t.newAnalysis.demoNotice}</p>
-          <p className="mt-1 text-muted-foreground">{t.newAnalysis.tryFixture}</p>
-        </div>
+    <form action={action} className="space-y-8">
+      {demoMode ? (
+        <p className="text-sm text-muted-foreground">
+          <span className="marker font-semibold text-foreground">Demo mode</span> No API key is set, so the test CVs in{" "}
+          <code className="font-mono text-xs">fixtures/cases/</code> get prewritten answers and other CVs get simple
+          keyword matching.
+        </p>
+      ) : (
+        <p className="border-l-4 border-primary pl-4 text-sm text-muted-foreground" data-testid="privacy-notice">
+          The analysis is made by Claude ({model}). The text of your CV and the posting is sent to Anthropic for
+          analysis, and stored encrypted here. You can delete it at any time.
+        </p>
       )}
 
-      <Card className="space-y-5">
-        <div>
-          <Label htmlFor="cv">{t.newAnalysis.cvLabel}</Label>
-          <Input
-            id="cv"
-            name="cv"
-            type="file"
-            accept=".pdf,.txt,application/pdf,text/plain"
+      <div className="grid gap-6 lg:grid-cols-[2fr_3fr]">
+        <div className="flex flex-col rounded-lg bg-card p-6 shadow-paper">
+          <Label htmlFor="cv" className="font-display text-lg font-bold">
+            CV <span className="font-sans text-sm font-normal text-muted-foreground">PDF or TXT, max 5 MB</span>
+          </Label>
+          <div className="relative mt-1 flex flex-1 flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed px-6 py-10 text-center transition-colors duration-150 hover:border-primary hover:bg-accent has-[input:focus-visible]:border-primary has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary/25">
+            <FileUp className="size-8 text-primary" aria-hidden />
+            {fileName ? (
+              <p className="font-mono text-sm break-all">{fileName}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold text-primary">Choose a file</span> or drop it here
+              </p>
+            )}
+            <input
+              id="cv"
+              name="cv"
+              type="file"
+              accept=".pdf,.txt,application/pdf,text/plain"
+              required
+              onChange={(event) => setFileName(event.target.files?.[0]?.name ?? null)}
+              className="absolute inset-0 cursor-pointer opacity-0"
+            />
+          </div>
+          <FieldHint className="mt-3">Only the text is stored, encrypted. Scanned PDFs (images) can&apos;t be read.</FieldHint>
+        </div>
+
+        <div className="rounded-lg bg-card p-6 shadow-paper">
+          <Label htmlFor="posting" className="font-display text-lg font-bold">
+            Job posting
+          </Label>
+          <Textarea
+            id="posting"
+            name="posting"
             required
-            className="h-auto py-2 file:mr-3 file:rounded-full file:border file:border-primary-dark file:bg-primary file:px-3 file:py-1 file:text-xs file:font-semibold file:text-primary-foreground"
+            rows={14}
+            placeholder="Paste the whole posting here, including requirements and tasks."
           />
-          <FieldHint>{t.newAnalysis.cvHint}</FieldHint>
         </div>
+      </div>
 
+      <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <Label htmlFor="posting">{t.newAnalysis.postingLabel}</Label>
-          <Textarea id="posting" name="posting" required rows={12} placeholder={t.newAnalysis.postingPlaceholder} />
+          <Label htmlFor="keywords">Keywords to highlight (optional)</Label>
+          <Input id="keywords" name="keywords" placeholder="e.g. Python, customer service" />
         </div>
-
         <div>
-          <Label htmlFor="keywords">{t.newAnalysis.keywordsLabel}</Label>
-          <Input id="keywords" name="keywords" />
-          <FieldHint>{t.newAnalysis.keywordsHint}</FieldHint>
+          <Label htmlFor="tone">Cover-letter tone</Label>
+          <Select id="tone" name="tone" defaultValue="formal">
+            <option value="formal">Formal</option>
+            <option value="conversational">Personal and professional</option>
+          </Select>
         </div>
+      </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="language">{t.newAnalysis.languageLabel}</Label>
-            <Select id="language" name="language" defaultValue={locale}>
-              <option value="nb">{t.newAnalysis.languages.nb}</option>
-              <option value="en">{t.newAnalysis.languages.en}</option>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="tone">{t.newAnalysis.toneLabel}</Label>
-            <Select id="tone" name="tone" defaultValue="formal">
-              <option value="formal">{t.newAnalysis.tones.formal}</option>
-              <option value="conversational">{t.newAnalysis.tones.conversational}</option>
-            </Select>
-          </div>
-        </div>
+      <FormError message={error} />
 
-        <FormError message={error} />
-
-        <Button type="submit" size="lg" disabled={pending}>
-          {pending && <Loader2 className="size-4 animate-spin" aria-hidden />}
-          {pending ? t.newAnalysis.submitting : t.newAnalysis.submit}
-        </Button>
-      </Card>
+      <Button type="submit" size="lg" disabled={pending}>
+        {pending && <Loader2 className="size-4 animate-spin" aria-hidden />}
+        {pending ? "Analysing … this can take half a minute" : "Analyse"}
+      </Button>
     </form>
   );
 }

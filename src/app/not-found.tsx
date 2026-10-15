@@ -2,16 +2,14 @@ import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getI18n } from "@/i18n/server";
 
-export default async function NotFound() {
-  const { t } = await getI18n();
+export default function NotFound() {
   return (
-    <Card className="mx-auto max-w-lg space-y-4 text-center">
-      <h1 className="text-2xl font-bold">{t.common.notFound}</h1>
-      <p className="text-muted-foreground">{t.common.notFoundText}</p>
+    <Card className="mx-auto max-w-lg space-y-4 p-8 text-center">
+      <h1 className="text-3xl font-extrabold">Page not found</h1>
+      <p className="text-muted-foreground">The analysis doesn&apos;t exist, or you don&apos;t have access to it.</p>
       <Link href="/dashboard" className={buttonVariants({ variant: "secondary" })}>
-        {t.result.back}
+        Back to my analyses
       </Link>
     </Card>
   );

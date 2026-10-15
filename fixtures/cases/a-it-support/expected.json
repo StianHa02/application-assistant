@@ -1,0 +1,13 @@
+{
+  "description": "IT student applying for a summer job in IT support. Covers most of the main requirements, but is missing three of the nice-to-have points.",
+  "tone": "formal",
+  "expectedMissing": [
+    { "label": "Microsoft Intune or Azure", "keywords": ["intune", "azure"] },
+    { "label": "Knowledge of ITIL", "keywords": ["itil"] },
+    { "label": "Driver's licence (class B)", "keywords": ["licence", "license"] }
+  ],
+  "expectedCovered": [
+    { "label": "Studies IT or similar", "keywords": ["studies it", "computer science"] },
+    { "label": "Customer service or user support experience", "keywords": ["customer service"] }
+  ]
+}

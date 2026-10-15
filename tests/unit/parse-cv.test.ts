@@ -19,7 +19,7 @@ function fileFrom(name: string, bytes: Uint8Array | string, type: string) {
 }
 
 describe("parseCv", () => {
-  it.each(["a-it-support-nb", "b-data-analyst-en", "c-markedsforing-nb"])(
+  it.each(["a-it-support", "b-data-analyst", "c-marketing"])(
     "extracts text from the %s PDF (incl. two-column layout) and recognises the fixture",
     async (caseId) => {
       const pdf = readFileSync(path.join(CASES, caseId, "cv.pdf"));
@@ -32,7 +32,7 @@ describe("parseCv", () => {
   );
 
   it("reads TXT files", async () => {
-    const txt = readFileSync(path.join(CASES, "a-it-support-nb", "cv.txt"), "utf8");
+    const txt = readFileSync(path.join(CASES, "a-it-support", "cv.txt"), "utf8");
     const text = await parseCv(fileFrom("cv.txt", txt, "text/plain"));
     expect(text).toContain("Ingrid Solberg");
   });

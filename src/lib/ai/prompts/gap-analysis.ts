@@ -4,8 +4,6 @@ import type { AnalysisInput } from "@/lib/ai/schemas";
 // Bump PROMPT_VERSION in src/lib/ai/prompts/index.ts whenever this text changes, so stored
 // analyses can be traced to the prompt that produced them.
 
-const LANGUAGE_NAME = { nb: "Norwegian (bokmål)", en: "English" } as const;
-
 export const GAP_ANALYSIS_SYSTEM = `You help students understand how well their CV matches a specific job posting, and how AI-based screening (applicant tracking systems, ATS) in recruiting reads their application.
 
 Your job is to produce an honest, evidence-based gap analysis. The student should learn *why* each requirement is or isn't met, not just get a score.
@@ -24,7 +22,7 @@ Rules:
 
 export function gapAnalysisUserPrompt(input: AnalysisInput): string {
   const keywords = input.keywords.length > 0 ? input.keywords.join(", ") : "(none)";
-  return `Write all text fields (summary, requirement, reasoning, nextStep, atsRelevance) in ${LANGUAGE_NAME[input.language]}. Keep cvEvidence and "original" exactly as written in the CV, in its original language.
+  return `Write all text fields (summary, requirement, reasoning, nextStep, atsRelevance) in English. Keep cvEvidence and "original" exactly as written in the CV, in its original language.
 
 <job_posting>
 ${input.posting}

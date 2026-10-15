@@ -18,7 +18,3 @@ export function getAiProvider(): AiProvider {
   if (process.env.AI_MODE === "mock" || !apiKey) return createMockProvider();
   return createClaudeProvider(apiKey, process.env.CLAUDE_MODEL?.trim() || DEFAULT_MODEL);
 }
-
-export function isDemoMode(): boolean {
-  return getAiProvider().name === "mock";
-}

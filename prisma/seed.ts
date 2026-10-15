@@ -19,7 +19,7 @@ const DEMO_PASSWORD = "demo1234";
 const db = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" }) });
 
 async function main() {
-  const caseDir = path.join(process.cwd(), "fixtures", "cases", "a-it-support-nb");
+  const caseDir = path.join(process.cwd(), "fixtures", "cases", "a-it-support");
   const read = (file: string) => readFileSync(path.join(caseDir, file), "utf8");
 
   await db.user.deleteMany({ where: { email: DEMO_EMAIL } });
@@ -36,7 +36,7 @@ async function main() {
       cvTextEnc: encrypt(read("cv.txt")),
       postingEnc: encrypt(posting),
       keywordsEnc: encrypt(JSON.stringify([])),
-      language: "nb",
+      language: "en",
       tone: "formal",
       gapAnalysisEnc: encrypt(read("gap-analysis.json")),
       coverLetterEnc: encrypt(read("cover-letter.json")),

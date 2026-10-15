@@ -77,7 +77,16 @@ export function createMockProvider(): AiProvider {
       await wait(DEMO_DELAY_MS);
       const fixture = findFixtureCase(input);
       if (fixture) return CoverLetterSchema.parse(readJson(path.join(fixture.dir, "cover-letter.json")));
-      return templateCoverLetter(input, gap);
+      return templateCoverLetter(gap);
+    },
+    // Demo mode can't write new text, so it says so instead of pretending.
+    async rewriteParagraph(_input, _gap, letter, index) {
+      await wait(DEMO_DELAY_MS);
+      return {
+        text: `[Demo] With an API key, the AI would write a new version of paragraph ${index + 1} here and keep the rest of the letter as it is.`,
+        rationale: "Demo mode can't rewrite text. Click \"New suggestions\" to get the full example letter back.",
+        linkedRequirements: letter.paragraphs[index]?.linkedRequirements ?? [],
+      };
     },
   };
 }
@@ -170,7 +179,6 @@ function significantWords(text: string): string[] {
 }
 
 function keywordGapAnalysis(input: AnalysisInput): GapAnalysis {
-  const nb = input.language === "nb";
   const cvLines = input.cvText
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -178,10 +186,10 @@ function keywordGapAnalysis(input: AnalysisInput): GapAnalysis {
 
   const requirementLines = extractRequirementLines(input.posting);
   const niceLines = niceToHaveLines(input.posting);
-  const extra = input.keywords.filter(Boolean).map((keyword) => (nb ? `Nøkkelord: ${keyword}` : `Keyword: ${keyword}`));
+  const extra = input.keywords.filter(Boolean).map((keyword) => `Keyword: ${keyword}`);
 
   const requirements: Requirement[] = [...requirementLines, ...extra].map((line) => {
-    const words = significantWords(line.replace(/^(Nøkkelord|Keyword): /, ""));
+    const words = significantWords(line.replace(/^Keyword: /, ""));
     let best = { line: null as string | null, hits: [] as string[] };
     for (const cvLine of cvLines) {
       const normalized = normalizeForMatch(cvLine);
@@ -189,7 +197,6 @@ function keywordGapAnalysis(input: AnalysisInput): GapAnalysis {
       if (hits.length > best.hits.length) best = { line: cvLine, hits };
     }
     const status = best.hits.length >= 2 ? "covered" : best.hits.length === 1 ? "partial" : "missing";
-    const found = best.hits.join(", ");
     return {
       requirement: line,
       type: NICE_HINTS.test(line) || niceLines.has(line) ? "nice" : "must",
@@ -197,29 +204,19 @@ function keywordGapAnalysis(input: AnalysisInput): GapAnalysis {
       cvEvidence: status === "missing" ? null : best.line,
       reasoning:
         status === "missing"
-          ? nb
-            ? "Demo: ingen av ordene i kravet ble funnet i CV-en."
-            : "Demo: none of the words in this requirement were found in the CV."
-          : nb
-            ? `Demo: fant ordene «${found}» i CV-en. En ekte KI-analyse ville vurdert betydningen, ikke bare ordene.`
-            : `Demo: found the words "${found}" in the CV. A real AI analysis would judge the meaning, not just the words.`,
-      nextStep: nb
-        ? "Legg inn en API-nøkkel for å få konkrete forslag fra KI-en."
-        : "Add an API key to get concrete suggestions from the AI.",
+          ? "Demo: none of the words in this requirement were found in the CV."
+          : `Demo: found the words "${best.hits.join(", ")}" in the CV. A real AI analysis would judge the meaning, not just the words.`,
+      nextStep: "Add an API key to get concrete suggestions from the AI.",
     };
   });
 
   return {
-    summary: nb
-      ? "Demo-modus: dette er en enkel nøkkelordmatching, ikke en KI-analyse. Den viser hvordan eldre ATS-systemer sammenligner ord – uten å forstå innholdet. Legg inn en API-nøkkel (se SETUP.md) for en ekte analyse."
-      : "Demo mode: this is simple keyword matching, not an AI analysis. It shows how older ATS systems compare words without understanding them. Add an API key (see SETUP.md) for a real analysis.",
+    summary:
+      "Demo mode: this is simple keyword matching, not an AI analysis. It shows how older ATS systems compare words without understanding them. Add an API key (see SETUP.md) for a real analysis.",
     requirements,
     atsRelevance: {
-      summary: nb
-        ? requirements.length === 0
-          ? "Fant ingen krav i annonsen. Demo-modusen leser linjer under overskrifter som «Vi ser etter deg som» eller «Kvalifikasjoner», og punktlister."
-          : "Nøkkelordmatching straffer synonymer: står det «kundebehandling» i annonsen og «kundeservice» i CV-en, blir det ikke treff. Moderne systemer ser i økende grad på relevans."
-        : requirements.length === 0
+      summary:
+        requirements.length === 0
           ? "No requirements were found in the posting. Demo mode reads lines under headings like 'Requirements' or 'Qualifications', and bullet lists."
           : "Keyword matching punishes synonyms: if the posting says 'customer service' and your CV says 'helping customers', there is no match. Modern systems increasingly look at relevance.",
       phrasingSuggestions: [],
@@ -227,32 +224,23 @@ function keywordGapAnalysis(input: AnalysisInput): GapAnalysis {
   };
 }
 
-function templateCoverLetter(input: AnalysisInput, gap: GapAnalysis): CoverLetter {
-  const nb = input.language === "nb";
+function templateCoverLetter(gap: GapAnalysis): CoverLetter {
   const strong = gap.requirements.filter((r) => r.status !== "missing").map((r) => r.requirement);
   return {
     paragraphs: [
       {
-        text: nb
-          ? "[Demo] Jeg søker herved på stillingen dere har lyst ut. Med en KI-nøkkel ville dette avsnittet blitt skrevet ut fra annonsen og CV-en din."
-          : "[Demo] I am applying for the position you have advertised. With an AI key, this paragraph would be written from the posting and your CV.",
-        rationale: nb ? "Demo-mal: åpningen bør nevne stillingen konkret." : "Demo template: the opening should name the position.",
+        text: "[Demo] I am applying for the position you have advertised. With an AI key, this paragraph would be written from the posting and your CV.",
+        rationale: "Demo template: the opening should name the position.",
         linkedRequirements: [],
       },
       {
-        text: nb
-          ? `[Demo] Her ville KI-en koblet erfaringen din til kravene du dekker best${strong.length ? `: ${strong.slice(0, 3).join("; ")}` : ""}.`
-          : `[Demo] Here the AI would connect your experience to the requirements you match best${strong.length ? `: ${strong.slice(0, 3).join("; ")}` : ""}.`,
-        rationale: nb
-          ? "Demo-mal: hoveddelen bør bygge på krav som faktisk er dokumentert i CV-en."
-          : "Demo template: the body should build on requirements your CV actually documents.",
+        text: `[Demo] Here the AI would connect your experience to the requirements you match best${strong.length ? `: ${strong.slice(0, 3).join("; ")}` : ""}.`,
+        rationale: "Demo template: the body should build on requirements your CV actually documents.",
         linkedRequirements: strong.slice(0, 3),
       },
       {
-        text: nb
-          ? "[Demo] Jeg ser frem til å høre fra dere."
-          : "[Demo] I look forward to hearing from you.",
-        rationale: nb ? "Demo-mal: en kort avslutning." : "Demo template: a short closing.",
+        text: "[Demo] I look forward to hearing from you.",
+        rationale: "Demo template: a short closing.",
         linkedRequirements: [],
       },
     ],

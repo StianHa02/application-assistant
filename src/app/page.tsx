@@ -1,66 +1,91 @@
-import { FileSearch, FileText, ScanText, Sparkles } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
+import { RequirementBody } from "@/components/analysis/requirement-detail";
 import { buttonVariants } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { getI18n } from "@/i18n/server";
 import { getCurrentUser } from "@/lib/auth";
 
-const STEP_ICONS = [FileText, ScanText, FileSearch, Sparkles];
+// A real row from fixture case A (fictional CV), shown opened, as a specimen of the result page.
+const SPECIMEN = {
+  requirement: "Has basic knowledge of networking",
+  status: "covered" as const,
+  reasoning:
+    "You have hands-on experience with router setup and Wi-Fi troubleshooting, backed by the course Networks and IT Security.",
+  nextStep: 'Write "network troubleshooting" rather than just "Wi-Fi", so the wording matches the responsibilities in the posting.',
+  cvEvidence: "Helped customers set up routers and troubleshoot Wi-Fi",
+  evidenceVerified: true,
+};
+const SPECIMEN_CV = `2024–present Customer Service Assistant, Elkjøp Molde
+- Advised customers on choosing PCs, phones and network equipment
+- Helped customers set up routers and troubleshoot Wi-Fi
+- Handled warranty claims in the store's checkout system`;
+
+const RULES = [
+  {
+    title: "It must quote your CV.",
+    text: "Every requirement it marks as covered or partial comes with a word-for-word quote from your CV as evidence.",
+  },
+  {
+    title: "The app checks every quote.",
+    text: "If a quote can't be found in your CV, you see a warning next to it. The AI can't invent experience for you.",
+  },
+  {
+    title: "The score is counted, not guessed.",
+    text: "The app calculates the coverage score from the statuses, so the same analysis always gives the same number.",
+  },
+];
 
 export default async function HomePage() {
-  const [{ t }, user] = await Promise.all([getI18n(), getCurrentUser()]);
+  const user = await getCurrentUser();
 
   return (
-    <div className="space-y-20">
-      <section className="grid gap-10 py-10 md:grid-cols-[3fr_2fr] md:items-center">
-        <div className="space-y-6">
-          <p className="inline-block rounded-full border border-secondary-dark bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-            {t.appName}
+    <div className="space-y-28">
+      <section className="grid items-center gap-14 pt-4 lg:grid-cols-[1.05fr_1fr]">
+        <div className="space-y-7">
+          <h1 className="text-5xl leading-[1.02] font-extrabold tracking-[-0.035em] md:text-6xl">
+            See your CV the way <span className="marker marker-sweep">recruiting software</span> reads it
+          </h1>
+          <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Upload your CV and paste a job posting. Every requirement gets marked as covered, partial or missing, with
+            the line from your CV that proves it and what to do next.
           </p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{t.home.title}</h1>
-          <p className="max-w-2xl text-lg text-muted-foreground">{t.home.tagline}</p>
           <div className="flex flex-wrap gap-3">
             <Link href={user ? "/analyses/new" : "/register"} className={buttonVariants({ size: "lg" })}>
-              {user ? t.nav.newAnalysis : t.home.getStarted}
+              {user ? "New analysis" : "Get started"}
             </Link>
             <Link href={user ? "/dashboard" : "/login"} className={buttonVariants({ variant: "secondary", size: "lg" })}>
-              {user ? t.home.goToDashboard : t.nav.login}
+              {user ? "My analyses" : "Log in"}
             </Link>
           </div>
         </div>
-        <Card className="space-y-3 border-primary-dark/40">
-          <h2 className="text-xl font-bold">{t.home.transparencyTitle}</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">{t.home.transparencyText}</p>
-        </Card>
+
+        <figure className="space-y-3">
+          <div className="overflow-hidden rounded-lg bg-card shadow-paper" data-status={SPECIMEN.status} aria-hidden>
+            <div className="flex items-start gap-4 bg-muted/60 px-5 py-4">
+              <span className="mt-1.5 h-3 w-5 shrink-0 -skew-x-12 rounded-[2px] bg-marker-covered" />
+              <span className="flex-1 font-semibold">{SPECIMEN.requirement}</span>
+              <ChevronDown className="mt-0.5 size-5 rotate-180 text-muted-foreground" />
+            </div>
+            <div className="px-5 pt-1 pb-6 sm:pl-14">
+              <RequirementBody requirement={SPECIMEN} cvText={SPECIMEN_CV} />
+            </div>
+          </div>
+          <figcaption className="font-mono text-xs text-muted-foreground">
+            One requirement from an analysis of a fictional student CV.
+          </figcaption>
+        </figure>
       </section>
 
-      <section id="how" className="space-y-6">
-        <h2 className="text-3xl font-bold">{t.home.stepsTitle}</h2>
-        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {t.home.steps.map((step, index) => {
-            const Icon = STEP_ICONS[index];
-            return (
-              <li key={step.title}>
-                <Card className="h-full space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="grid size-10 place-items-center rounded-full border border-primary-dark bg-primary text-primary-foreground">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <span className="text-sm font-semibold text-muted-foreground">{index + 1}</span>
-                  </div>
-                  <h3 className="text-lg font-bold">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.text}</p>
-                </Card>
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-
-      <section className="rounded-lg border bg-card p-8 md:p-10">
-        <h2 className="mb-3 text-2xl font-bold">{t.home.atsTitle}</h2>
-        <p className="max-w-3xl leading-relaxed text-muted-foreground">{t.home.atsText}</p>
+      <section className="grid gap-10 border-t pt-12 md:grid-cols-[1fr_2fr]">
+        <h2 className="text-3xl leading-tight font-extrabold">Three rules the AI follows</h2>
+        <ul className="divide-y border-y">
+          {RULES.map(({ title, text }) => (
+            <li key={title} className="grid gap-1 py-5 sm:grid-cols-[16rem_1fr] sm:gap-8">
+              <p className="font-display text-lg font-bold">{title}</p>
+              <p className="leading-relaxed text-muted-foreground">{text}</p>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );

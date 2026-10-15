@@ -1,0 +1,84 @@
+{
+  "summary": "You have a good starting point: the right field of study, documented results on Instagram and retail experience with bikes. The gaps are the more technical marketing skills the posting asks for: paid advertising, video editing and newsletters.",
+  "requirements": [
+    {
+      "requirement": "Studies marketing, business or a similar field",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Bachelor in Business and Administration, Molde University College",
+      "reasoning": "You study business and administration with a specialisation in marketing, which fits the requirement well.",
+      "nextStep": "Highlight the specialisation in marketing and consumer behaviour in your cover letter."
+    },
+    {
+      "requirement": "Experience creating content for social media",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Plans and publishes posts on Instagram for 1,200 followers",
+      "reasoning": "You run a real account and have a measurable result (40% more followers).",
+      "nextStep": "Add a link to the account or a few example posts, if the society allows it."
+    },
+    {
+      "requirement": "Good writing skills in Norwegian",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Norwegian (fluent)",
+      "reasoning": "You list fluent Norwegian and say you enjoy writing.",
+      "nextStep": "Your application is the proof here, so proofread it carefully before sending."
+    },
+    {
+      "requirement": "Experience with Google Ads or Meta advertising",
+      "type": "must",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "The CV shows organic content but no paid ads. The posting also says you'll analyse ad results.",
+      "nextStep": "Google's free Skillshop courses and Meta Blueprint give a quick introduction. If you have run an ad for the student society, add it."
+    },
+    {
+      "requirement": "Can edit video, for example in CapCut or Premiere Pro",
+      "type": "must",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Video or video editing isn't mentioned. The CV mentions Canva and Instagram posts, but not video.",
+      "nextStep": "If you make Reels or videos, write which tool you use. If not, CapCut is free and quick to learn before the internship."
+    },
+    {
+      "requirement": "Interest in cycling and outdoor life",
+      "type": "must",
+      "status": "partial",
+      "cvEvidence": "Advised customers on sports equipment and bikes",
+      "reasoning": "You have worked with bikes in retail, but the CV says nothing about your own interest in cycling or the outdoors.",
+      "nextStep": "If you cycle or hike yourself, mention it briefly under About me or in the letter."
+    },
+    {
+      "requirement": "Have worked with newsletters, for example in Mailchimp",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Newsletters and email marketing aren't mentioned.",
+      "nextStep": "This is only an advantage. You can mention that you write well, which is a big part of a newsletter."
+    },
+    {
+      "requirement": "Have experience from retail or customer service",
+      "type": "nice",
+      "status": "covered",
+      "cvEvidence": "Sales Assistant, XXL Molde",
+      "reasoning": "Two years in a sports store with customer contact and campaign posters.",
+      "nextStep": "Link the campaign poster work to the responsibility \"Plan and follow up campaigns\"."
+    }
+  ],
+  "atsRelevance": {
+    "summary": "An ATS would find matches for Instagram, marketing and retail. It would not find \"TikTok\", \"Google Ads\", \"Meta\", \"video\" or \"newsletter\", which cover several of the requirements. Don't add words for things you haven't done. Instead, use the posting's language where you do have experience, such as \"campaigns\" and \"content\".",
+    "phrasingSuggestions": [
+      {
+        "original": "Plans and publishes posts on Instagram for 1,200 followers",
+        "suggested": "Plans and creates content for Instagram (1,200 followers)",
+        "why": "The posting uses \"create content\" under both responsibilities and qualifications."
+      },
+      {
+        "original": "Put up campaign posters and arranged product displays in the store",
+        "suggested": "Ran in-store campaigns with posters and product displays",
+        "why": "Links the experience to the responsibility \"Plan and follow up campaigns\"."
+      }
+    ]
+  }
+}

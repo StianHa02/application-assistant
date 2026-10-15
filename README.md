@@ -1,10 +1,10 @@
-# Søknadsassistenten: AI CV & Job Application Assistant
+# Application Assistant: AI CV & Job Application Assistant
 
-A learning tool that shows students how AI is used in recruiting. Upload a CV and paste a job posting, and the app returns:
+A learning tool that shows students how AI is used in recruiting. The app (interface and AI answers) is in English. Upload a CV and paste a job posting, and the app returns:
 
 - **Gap analysis.** Every requirement in the posting gets a status (covered / partial / missing), a word-for-word quote from the CV as evidence, the reasoning, and a concrete next step.
 - **ATS feedback.** How an applicant tracking system would read the CV, plus suggested phrasings that use the posting's language for experience the student actually has.
-- **Cover-letter suggestions.** Paragraph by paragraph, each with an explanation of why it was written that way. The student picks what to keep.
+- **Cover-letter suggestions.** Paragraph by paragraph, each with an explanation of why it was written that way. The student picks what to keep, and can ask for a new version of a single paragraph.
 
 The AI must quote the CV, and the app checks that every quote really exists. The coverage score is calculated by the app, not the AI, so it is the same every time.
 
@@ -26,7 +26,7 @@ No API key is needed: without one the app runs in **demo mode** with prewritten 
 | Part | Choice |
 |---|---|
 | App | Next.js 16 (App Router, Server Actions, TypeScript) |
-| Styling | Tailwind CSS v4, with design tokens modelled on [echo.uib.no](https://echo.uib.no) |
+| Styling | Tailwind CSS v4; teal/yellow palette, Schibsted Grotesk + Work Sans + IBM Plex Mono |
 | Database | SQLite via Prisma 7 (a single local file) |
 | Login | Email + password (bcrypt) with a signed session cookie (`jose`) |
 | Encryption | AES-256-GCM for CV text, postings and AI results |
@@ -42,8 +42,8 @@ fixtures/cases/           3 fictional test cases: CV (txt + pdf), posting, expec
 prisma/                   database schema, migrations, seed (demo user)
 scripts/eval.ts           checks the real model against the test cases (npm run eval)
 src/app/                  pages and Server Actions
-src/components/           UI components (analysis/ = result page)
-src/i18n/                 Norwegian and English UI text
+src/components/           UI components (analysis/ = result page: requirement list, detail panel, drawer)
+src/lib/messages.ts       user-facing error messages
 src/lib/ai/               ALL AI code: provider switch, Claude provider, demo provider, schemas
 src/lib/ai/prompts/       the prompts sent to the model (versioned)
 src/lib/analysis.ts       coverage score and quote check (deterministic, tested)
@@ -63,7 +63,7 @@ All AI calls go through `getAiProvider()` in [`src/lib/ai/index.ts`](src/lib/ai/
 The app makes two calls:
 
 1. **Gap analysis.** [`prompts/gap-analysis.ts`](src/lib/ai/prompts/gap-analysis.ts) returns `GapAnalysis` ([`schemas.ts`](src/lib/ai/schemas.ts)).
-2. **Cover-letter suggestions.** [`prompts/cover-letter.ts`](src/lib/ai/prompts/cover-letter.ts) uses the gap analysis as input and returns `CoverLetter`.
+2. **Cover-letter suggestions.** [`prompts/cover-letter.ts`](src/lib/ai/prompts/cover-letter.ts) uses the gap analysis as input and returns `CoverLetter`. "Rewrite" on a paragraph makes a smaller call with the same prompt plus the current letter, and returns only that paragraph.
 
 Each analysis stores which provider, model and prompt version produced it.
 

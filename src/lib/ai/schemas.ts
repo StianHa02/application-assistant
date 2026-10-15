@@ -45,14 +45,13 @@ export const CoverLetterSchema = z.object({
 export type Requirement = z.infer<typeof RequirementSchema>;
 export type GapAnalysis = z.infer<typeof GapAnalysisSchema>;
 export type CoverLetter = z.infer<typeof CoverLetterSchema>;
+export type CoverLetterParagraph = z.infer<typeof CoverLetterParagraphSchema>;
 
-export type Language = "nb" | "en";
 export type Tone = "formal" | "conversational";
 
 export type AnalysisInput = {
   cvText: string;
   posting: string;
   keywords: string[];
-  language: Language;
   tone: Tone;
 };

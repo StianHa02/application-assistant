@@ -4,11 +4,10 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { createMockProvider, extractRequirementLines, FIXTURES_DIR } from "@/lib/ai/mock-provider";
-import { CoverLetterSchema, GapAnalysisSchema, type Language, type Tone } from "@/lib/ai/schemas";
+import { CoverLetterSchema, GapAnalysisSchema, type Tone } from "@/lib/ai/schemas";
 import { evidenceFound } from "@/lib/analysis";
 
 type Expected = {
-  language: Language;
   tone: Tone;
   expectedMissing: { label: string; keywords: string[] }[];
   expectedCovered: { label: string; keywords: string[] }[];
@@ -62,16 +61,20 @@ describe("mock provider", () => {
   it("returns the prewritten response for a fixture case", async () => {
     const provider = createMockProvider();
     const input = {
-      cvText: read("a-it-support-nb", "cv.txt"),
-      posting: read("a-it-support-nb", "posting.txt"),
+      cvText: read("a-it-support", "cv.txt"),
+      posting: read("a-it-support", "posting.txt"),
       keywords: [],
-      language: "nb" as const,
       tone: "formal" as const,
     };
     const gap = await provider.analyzeGap(input);
     expect(gap.requirements.find((r) => r.requirement.includes("ITIL"))?.status).toBe("missing");
     const letter = await provider.writeCoverLetter(input, gap);
     expect(letter.paragraphs[0].text).toContain("Nordvik Kraft");
+
+    // Demo mode can't rewrite a paragraph, and says so.
+    const rewritten = await provider.rewriteParagraph(input, gap, letter, 1);
+    expect(rewritten.text).toMatch(/^\[Demo\]/);
+    expect(rewritten.linkedRequirements).toEqual(letter.paragraphs[1].linkedRequirements);
   });
 
   it("falls back to labelled keyword matching for other inputs", async () => {
@@ -80,11 +83,10 @@ describe("mock provider", () => {
       cvText: "Ola Nordmann\nErfaring med Excel og regnskap\nFørerkort klasse B",
       posting: "Vi søker:\n- Erfaring med Excel\n- Kjennskap til SAP\n- Førerkort klasse B er en fordel",
       keywords: [],
-      language: "nb",
       tone: "formal",
     });
     expect(GapAnalysisSchema.safeParse(gap).success).toBe(true);
-    expect(gap.summary).toMatch(/Demo-modus/);
+    expect(gap.summary).toMatch(/Demo mode/);
     const byText = Object.fromEntries(gap.requirements.map((r) => [r.requirement, r]));
     expect(byText["Erfaring med Excel"].status).not.toBe("missing");
     expect(byText["Kjennskap til SAP"].status).toBe("missing");
@@ -118,7 +120,6 @@ describe("mock provider", () => {
       cvText: "Kari Nordmann\nStuderer ingeniørfag ved et fiktivt universitet\nGod i Excel",
       posting,
       keywords: [],
-      language: "nb",
       tone: "formal",
     });
     expect(gap.requirements).toHaveLength(4);
@@ -127,10 +128,10 @@ describe("mock provider", () => {
   });
 
   it("reads the fixture postings by their headings, without tasks or the deadline", () => {
-    const lines = extractRequirementLines(read("a-it-support-nb", "posting.txt"));
-    expect(lines).toContain("Kjennskap til ITIL");
-    expect(lines).not.toContain("Brukerstøtte på telefon, chat og oppmøte");
-    expect(lines.some((line) => line.startsWith("Søknadsfrist"))).toBe(false);
+    const lines = extractRequirementLines(read("a-it-support", "posting.txt"));
+    expect(lines).toContain("Knowledge of ITIL");
+    expect(lines).not.toContain("User support by phone, chat and in person");
+    expect(lines.some((line) => line.startsWith("Application deadline"))).toBe(false);
     expect(lines).toHaveLength(9);
   });
 

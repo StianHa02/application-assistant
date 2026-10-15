@@ -1,38 +1,30 @@
 import type { Metadata } from "next";
 
-import { LanguageSwitch } from "@/components/language-switch";
 import { SettingsActions } from "@/components/settings-actions";
 import { Card, CardTitle } from "@/components/ui/card";
-import { format } from "@/i18n";
-import { getI18n } from "@/i18n/server";
 import { countAnalyses } from "@/lib/analyses";
 import { requireUser } from "@/lib/auth";
 
-export const metadata: Metadata = { title: "Innstillinger" };
+export const metadata: Metadata = { title: "Settings" };
 
 export default async function SettingsPage() {
   const user = await requireUser();
-  const [{ t }, count] = await Promise.all([getI18n(), countAnalyses(user.id)]);
+  const count = await countAnalyses(user.id);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-3xl font-bold">{t.settings.title}</h1>
+      <h1 className="text-4xl font-extrabold">Settings</h1>
 
-      <Card className="space-y-2">
-        <CardTitle>{t.settings.account}</CardTitle>
-        <p>{user.name}</p>
-        <p className="text-muted-foreground">{user.email}</p>
-      </Card>
-
-      <Card className="flex items-center justify-between gap-4">
-        <CardTitle>{t.settings.language}</CardTitle>
-        <LanguageSwitch />
+      <Card className="space-y-1">
+        <CardTitle>Account</CardTitle>
+        <p className="font-mono text-sm text-muted-foreground">{user.email}</p>
       </Card>
 
       <Card className="space-y-4">
-        <CardTitle>{t.settings.dataTitle}</CardTitle>
+        <CardTitle>Your data</CardTitle>
         <p className="text-muted-foreground" data-testid="analysis-count">
-          {format(t.settings.dataText, { count })}
+          You have {count} {count === 1 ? "analysis" : "analyses"} stored. All CV and posting text is encrypted in the
+          database.
         </p>
         <SettingsActions />
       </Card>

@@ -2,10 +2,21 @@
 
 import { useEffect, useMemo, useRef } from "react";
 
+import type { Requirement } from "@/lib/ai/schemas";
 import { findRanges, splitByRanges } from "@/lib/highlight";
 import { cn } from "@/lib/utils";
 
-export function HighlightedText({ text, phrase, className }: { text: string; phrase?: string | null; className?: string }) {
+export function HighlightedText({
+  text,
+  phrase,
+  status,
+  className,
+}: {
+  text: string;
+  phrase?: string | null;
+  status?: Requirement["status"];
+  className?: string;
+}) {
   const segments = useMemo(() => splitByRanges(text, findRanges(text, phrase)), [text, phrase]);
   const firstMark = useRef<HTMLElement>(null);
 
@@ -24,7 +35,7 @@ export function HighlightedText({ text, phrase, className }: { text: string; phr
       {segments.map((segment, index) => {
         if (!segment.highlighted) return <span key={index}>{segment.text}</span>;
         return (
-          <mark key={index} ref={index === firstHighlighted ? firstMark : undefined} className="evidence">
+          <mark key={index} ref={index === firstHighlighted ? firstMark : undefined} className="evidence" data-status={status}>
             {segment.text}
           </mark>
         );

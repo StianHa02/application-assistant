@@ -19,7 +19,6 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
     <AnalysisView
       id={analysis.id}
       title={analysis.title}
-      createdAt={analysis.createdAt.toISOString()}
       cvText={analysis.cvText}
       posting={analysis.posting}
       provider={analysis.provider}

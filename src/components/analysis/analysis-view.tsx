@@ -1,17 +1,18 @@
 "use client";
 
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft, ListChecks, PenLine, ScanText } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { deleteAnalysis } from "@/app/actions/analyses";
-import { CoverageRing } from "@/components/analysis/coverage-ring";
+import { AtsView } from "@/components/analysis/ats-view";
+import { CoverageBar } from "@/components/analysis/coverage-bar";
 import { CoverLetterView } from "@/components/analysis/cover-letter-view";
-import { GapView } from "@/components/analysis/gap-view";
+import { DocumentDrawer } from "@/components/analysis/document-drawer";
+import { RequirementDetail } from "@/components/analysis/requirement-detail";
+import { RequirementList } from "@/components/analysis/requirement-list";
+import { sortRequirements } from "@/components/analysis/status";
 import { ConfirmButton } from "@/components/confirm-button";
-import { Card } from "@/components/ui/card";
-import { format } from "@/i18n";
-import { useI18n } from "@/i18n/client";
 import type { CoverLetter, GapAnalysis } from "@/lib/ai/schemas";
 import type { CheckedRequirement, Coverage } from "@/lib/analysis";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,6 @@ import { cn } from "@/lib/utils";
 export type AnalysisViewProps = {
   id: string;
   title: string;
-  createdAt: string;
   cvText: string;
   posting: string;
   provider: string;
@@ -31,76 +31,123 @@ export type AnalysisViewProps = {
   letter: CoverLetter | null;
 };
 
+const TABS = [
+  { id: "gap", label: "Gap analysis", icon: ListChecks },
+  { id: "ats", label: "ATS feedback", icon: ScanText },
+  { id: "letter", label: "Cover letter", icon: PenLine },
+] as const;
+type TabId = (typeof TABS)[number]["id"];
+
 export function AnalysisView(props: AnalysisViewProps) {
-  const { t } = useI18n();
-  const [tab, setTab] = useState<"gap" | "letter">("gap");
   const { coverage } = props;
+  const [tab, setTab] = useState<TabId>("gap");
+  const [drawer, setDrawer] = useState<"cv" | "posting" | null>(null);
+
+  // Gaps first, must-haves before nice-to-haves, so the first item is the most important one.
+  const sorted = useMemo(() => sortRequirements(props.requirements), [props.requirements]);
+  const [selected, setSelected] = useState(0);
+  const current = sorted[selected];
+  const closeDrawer = useCallback(() => setDrawer(null), []);
+
+  // Both columns scroll with the page. If the detail panel's top is out of view after picking a
+  // requirement further down the list, bring it back into view.
+  const detailRef = useRef<HTMLDivElement>(null);
+  const select = (index: number) => {
+    setSelected(index);
+    const top = detailRef.current?.getBoundingClientRect().top;
+    if (top !== undefined && top < 0) detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <div className="space-y-6">
-      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-        <ArrowLeft className="size-4" aria-hidden /> {t.result.back}
-      </Link>
+    <div className="space-y-10">
+      <header className="space-y-6">
+        <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+          <ArrowLeft className="size-4" aria-hidden /> My analyses
+        </Link>
 
-      {props.provider === "mock" && (
-        <div role="status" className="flex gap-3 rounded-lg border border-secondary-dark bg-secondary px-4 py-3 text-secondary-foreground">
-          <Info className="mt-0.5 size-5 shrink-0" aria-hidden />
-          <div>
-            <p className="font-semibold">{t.result.demoBanner}</p>
-            <p className="text-sm">{t.result.demoBannerHint}</p>
-          </div>
-        </div>
-      )}
-
-      <Card className="flex flex-col gap-6 md:flex-row md:items-center">
-        <CoverageRing score={coverage.score} size={88} />
-        <div className="flex-1 space-y-2">
-          <h1 className="text-2xl font-bold">{props.title}</h1>
-          <p className="font-semibold" data-testid="coverage-detail">
-            {t.result.coverage}: {format(t.result.coverageDetail, { ...coverage })}
+        {props.provider === "mock" && (
+          <p role="status" className="text-sm text-muted-foreground">
+            <span className="marker font-semibold text-foreground">Demo mode</span> Example response, not a real AI
+            analysis. Add an API key to analyse your own CV (see SETUP.md).
           </p>
-          <p className="text-sm text-muted-foreground">{props.gap.summary}</p>
-          <p className="text-xs text-muted-foreground">{t.result.coverageHint}</p>
-        </div>
-      </Card>
+        )}
 
-      <div role="tablist" className="flex gap-2 border-b">
-        {(["gap", "letter"] as const).map((value) => (
+        <h1 className="max-w-4xl text-3xl leading-tight font-extrabold md:text-4xl">{props.title}</h1>
+
+        <div className="grid gap-x-12 gap-y-6 md:grid-cols-[auto_1fr]">
+          <div className="w-full space-y-3 md:w-80">
+            <p className="flex items-baseline gap-2">
+              <span className="font-display text-5xl leading-none font-extrabold tracking-tight">{coverage.score}%</span>
+              <span className="font-semibold text-muted-foreground">match</span>
+            </p>
+            <CoverageBar coverage={coverage} legend />
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              {coverage.mustCovered} of {coverage.mustTotal} must-haves covered. In the score, must-haves count double
+              and partial matches count half.
+            </p>
+          </div>
+          <p className="max-w-2xl leading-relaxed text-muted-foreground md:border-l md:pl-12">{props.gap.summary}</p>
+        </div>
+      </header>
+
+      <div
+        role="tablist"
+        aria-label="Result sections"
+        className="grid grid-cols-3 gap-1 rounded-lg bg-primary/10 p-1.5"
+      >
+        {TABS.map(({ id, label, icon: Icon }) => (
           <button
-            key={value}
+            key={id}
             role="tab"
             type="button"
-            aria-selected={tab === value}
-            onClick={() => setTab(value)}
+            aria-selected={tab === id}
+            onClick={() => setTab(id)}
             className={cn(
-              "-mb-px border-b-2 px-4 py-2 text-sm font-semibold transition-colors duration-300",
-              tab === value ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
+              "flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-sm font-semibold transition-colors duration-150 sm:px-5",
+              // Same look as the active link in the header nav: white pill, teal text.
+              tab === id
+                ? "bg-card text-primary-dark shadow-sm"
+                : "text-foreground/70 hover:bg-card/60 hover:text-foreground",
             )}
           >
-            {t.result.tabs[value]}
+            <Icon className="hidden size-4 sm:block" aria-hidden />
+            {label}
           </button>
         ))}
       </div>
 
       <div role="tabpanel">
-        {tab === "gap" ? (
-          <GapView cvText={props.cvText} posting={props.posting} requirements={props.requirements} ats={props.gap.atsRelevance} />
-        ) : (
-          <CoverLetterView analysisId={props.id} letter={props.letter} />
-        )}
+        {tab === "gap" &&
+          (current ? (
+            <div className="grid gap-8 lg:grid-cols-[320px_1fr]">
+              <RequirementList requirements={sorted} selected={selected} onSelect={select} />
+              <div ref={detailRef} className="scroll-mt-6 self-start rounded-lg bg-card p-6 shadow-paper md:p-8">
+                <RequirementDetail requirement={current} cvText={props.cvText} onOpen={setDrawer} />
+              </div>
+            </div>
+          ) : (
+            <p className="text-muted-foreground">No requirements were found in the posting.</p>
+          ))}
+        {tab === "ats" && <AtsView ats={props.gap.atsRelevance} />}
+        {tab === "letter" && <CoverLetterView analysisId={props.id} letter={props.letter} />}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t pt-6">
-        <p className="text-xs text-muted-foreground">
-          {format(t.result.meta, { provider: props.provider, model: props.model, prompt: props.promptVersion })}
+      <footer className="flex flex-wrap items-center justify-between gap-4 border-t pt-6">
+        <p className="font-mono text-xs text-muted-foreground">
+          {props.provider} · {props.model} · prompt {props.promptVersion}
         </p>
-        <ConfirmButton
-          size="sm"
-          label={t.result.delete}
-          confirmLabel={t.result.deleteConfirm}
-          onConfirm={() => deleteAnalysis(props.id)}
+        <ConfirmButton size="sm" label="Delete analysis" confirmLabel="Click again to delete" onConfirm={() => deleteAnalysis(props.id)} />
+      </footer>
+
+      {drawer && (
+        <DocumentDrawer
+          title={drawer === "cv" ? "Your CV" : "Job posting"}
+          text={drawer === "cv" ? props.cvText : props.posting}
+          phrase={drawer === "cv" ? (current?.cvEvidence ?? null) : (current?.requirement ?? null)}
+          status={current?.status}
+          onClose={closeDrawer}
         />
-      </div>
+      )}
     </div>
   );
 }

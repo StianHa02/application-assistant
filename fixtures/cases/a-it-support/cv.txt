@@ -1,0 +1,31 @@
+Ingrid Solberg
+Email: ingrid.solberg@example.com | Phone: 400 00 001 | Molde
+
+PROFILE
+Bachelor student in IT and Information Systems at Molde University College (2nd year). Enjoys solving problems for users and learning new tools quickly.
+
+EDUCATION
+2025–2028 Bachelor in IT and Information Systems, Molde University College
+Relevant courses: Programming (Python), Databases (SQL), Networks and IT Security, Systems Development
+2022–2025 General Studies, Molde Upper Secondary School
+
+EXPERIENCE
+2024–present Customer Service Assistant (part-time), Elkjøp Molde
+- Advised customers on choosing PCs, phones and network equipment
+- Helped customers set up routers and troubleshoot Wi-Fi
+- Handled warranty claims in the store's checkout system
+
+Summer 2024 Summer Temp, Molde Municipality, Service Centre
+- Answered enquiries from residents by phone and email
+
+PROJECTS
+Student project: Equipment lending system (2025)
+- Built a web application in Python (Flask) with an SQLite database in a group of four
+- Used Git and GitHub for version control
+
+SKILLS
+Python, SQL, HTML/CSS, Git, Windows 11, Microsoft 365, basic Linux
+Languages: Norwegian (native), English (fluent)
+
+OTHER
+Volunteer at Molde Jazz 2024: stage rigging and audience host

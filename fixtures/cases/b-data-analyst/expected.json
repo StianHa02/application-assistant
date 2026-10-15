@@ -1,0 +1,42 @@
+{
+  "description": "Logistics student applying for a data analyst internship. Strong on Excel and communication, but no Python, no industry knowledge and no cloud data platforms.",
+  "tone": "conversational",
+  "expectedMissing": [
+    {
+      "label": "Python (pandas)",
+      "keywords": [
+        "python",
+        "pandas"
+      ]
+    },
+    {
+      "label": "Shipping or seafood industry knowledge",
+      "keywords": [
+        "shipping",
+        "seafood"
+      ]
+    },
+    {
+      "label": "Cloud data platforms (Azure / Databricks)",
+      "keywords": [
+        "cloud",
+        "azure",
+        "databricks"
+      ]
+    }
+  ],
+  "expectedCovered": [
+    {
+      "label": "Experience with Excel",
+      "keywords": [
+        "excel"
+      ]
+    },
+    {
+      "label": "Explaining results to non-technical people",
+      "keywords": [
+        "non-technical"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+Summer Job 2027: IT Support – Nordvik Kraft AS
+
+Nordvik Kraft AS is a regional energy company with 180 employees in Møre og Romsdal. We are looking for two students to join our IT department this summer (weeks 25–32).
+
+Responsibilities:
+- User support by phone, chat and in person
+- Preparing and rolling out new PCs
+- Troubleshooting networks and printers
+- Simple scripting to automate routine tasks
+
+We are looking for someone who:
+- Studies IT, computer science or a similar field
+- Has experience with customer service or user support
+- Knows Windows and Microsoft 365
+- Has basic knowledge of networking
+- Can write simple scripts, for example in PowerShell or Python
+- Speaks and writes Norwegian well
+
+Nice to have:
+- Experience with Microsoft Intune or Azure
+- Knowledge of ITIL
+- Driver's licence (class B)
+
+Application deadline: 1 February 2027.

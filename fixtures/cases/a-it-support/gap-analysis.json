@@ -1,0 +1,97 @@
+{
+  "summary": "Your CV matches the main requirements well: you study IT, have customer service experience with technical advice, and know Windows and Microsoft 365. What's missing are the three nice-to-have points (Intune/Azure, ITIL and a driver's licence), and scripting is only partly documented.",
+  "requirements": [
+    {
+      "requirement": "Studies IT, computer science or a similar field",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Bachelor in IT and Information Systems, Molde University College",
+      "reasoning": "You are taking a bachelor's in IT and Information Systems, which is exactly what the posting asks for.",
+      "nextStep": "Mention your year and that you finish in 2028, so the employer sees you could work more than one summer."
+    },
+    {
+      "requirement": "Has experience with customer service or user support",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Customer Service Assistant (part-time), Elkjøp Molde",
+      "reasoning": "Your part-time job at Elkjøp is customer service with technical products, and the summer temp job at the service centre is also direct contact with users.",
+      "nextStep": "Use the term \"user support\" for tasks where it fits, since that is the posting's own wording."
+    },
+    {
+      "requirement": "Knows Windows and Microsoft 365",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Windows 11, Microsoft 365",
+      "reasoning": "Both tools are in your skills list.",
+      "nextStep": "Give a concrete example in the cover letter, for example if you have helped customers set up Microsoft 365 at Elkjøp."
+    },
+    {
+      "requirement": "Has basic knowledge of networking",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Helped customers set up routers and troubleshoot Wi-Fi",
+      "reasoning": "You have hands-on experience with router setup and Wi-Fi troubleshooting, backed by the course Networks and IT Security.",
+      "nextStep": "Write \"network troubleshooting\" rather than just \"Wi-Fi\", so the wording matches the responsibilities in the posting."
+    },
+    {
+      "requirement": "Can write simple scripts, for example in PowerShell or Python",
+      "type": "must",
+      "status": "partial",
+      "cvEvidence": "Built a web application in Python (Flask) with an SQLite database",
+      "reasoning": "You know Python, but the CV only shows programming in a student project, not scripts that automate tasks. PowerShell isn't mentioned.",
+      "nextStep": "If you have written a small script to automate something (for example tidying files or fetching data), add it under Projects. A short PowerShell course before the summer would also strengthen the application."
+    },
+    {
+      "requirement": "Speaks and writes Norwegian well",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Norwegian (native)",
+      "reasoning": "Norwegian is your native language.",
+      "nextStep": "No change needed. A well-written application shows your written skills."
+    },
+    {
+      "requirement": "Experience with Microsoft Intune or Azure",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Neither Intune, Azure nor any other device or cloud management is mentioned in the CV.",
+      "nextStep": "Microsoft Learn has free introductory modules on Intune and Azure. Mention that you have started them, but don't claim the skill until you have it."
+    },
+    {
+      "requirement": "Knowledge of ITIL",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "ITIL isn't mentioned, and none of the courses in the CV cover IT service management directly.",
+      "nextStep": "Read a short introduction to the ITIL terms incident, problem and change, so you can refer to them in an interview. It is rarely a hard requirement for a summer job."
+    },
+    {
+      "requirement": "Driver's licence (class B)",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "A driver's licence isn't mentioned in the CV.",
+      "nextStep": "If you have one, add it at the top or under Other. If you don't, there's no need to mention it."
+    }
+  ],
+  "atsRelevance": {
+    "summary": "An ATS would find good matches for your degree, Windows, Microsoft 365 and Python. The weakness is that the CV describes tasks in different words from the posting (\"advised customers\", \"Wi-Fi\") where the posting says \"user support\" and \"troubleshooting networks\". Modern systems understand some synonyms, but it helps to use the posting's terms where they describe what you actually did.",
+    "phrasingSuggestions": [
+      {
+        "original": "Advised customers on choosing PCs, phones and network equipment",
+        "suggested": "User support and advice for customers on PCs, phones and network equipment",
+        "why": "The posting mentions \"user support\" under both responsibilities and requirements."
+      },
+      {
+        "original": "Helped customers set up routers and troubleshoot Wi-Fi",
+        "suggested": "Troubleshooting networks and setting up routers for customers",
+        "why": "Mirrors the responsibility \"Troubleshooting networks and printers\"."
+      },
+      {
+        "original": "Answered enquiries from residents by phone and email",
+        "suggested": "User support by phone and email for residents",
+        "why": "The posting asks for user support by phone and chat, and this shows you have done exactly that."
+      }
+    ]
+  }
+}

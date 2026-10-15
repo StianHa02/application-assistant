@@ -37,8 +37,8 @@ async function makePdf(cvText: string, twoColumn: boolean): Promise<Uint8Array> 
   // Column layout: header block full width, then the rest split in two columns.
   const columns = twoColumn
     ? [
-        { x: PAGE.margin, width: 160, blocks: blocks.slice(1).filter((b) => /^(FERDIGHETER|UTDANNING)/.test(b)) },
-        { x: PAGE.margin + 190, width: 305, blocks: blocks.slice(1).filter((b) => !/^(FERDIGHETER|UTDANNING)/.test(b)) },
+        { x: PAGE.margin, width: 160, blocks: blocks.slice(1).filter((b) => /^(SKILLS|EDUCATION)/.test(b)) },
+        { x: PAGE.margin + 190, width: 305, blocks: blocks.slice(1).filter((b) => !/^(SKILLS|EDUCATION)/.test(b)) },
       ]
     : [{ x: PAGE.margin, width: PAGE.width - 2 * PAGE.margin, blocks: blocks.slice(1) }];
 

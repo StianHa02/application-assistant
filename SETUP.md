@@ -1,4 +1,4 @@
-# Setup: running Søknadsassistenten locally
+# Setup: running Application Assistant locally
 
 This guide takes you from a fresh clone to a running app. It assumes no prior knowledge of the project. Everything runs on your own machine: **no Docker, no cloud accounts and no API key are needed.** Without a key the app runs in demo mode (see step 6).
 
@@ -95,16 +95,17 @@ Note that in live mode the CV text is sent to Anthropic for analysis. Use the fi
 
 ## 7. Try it with a test case
 
-1. Log in and click **Ny analyse** (New analysis).
-2. Upload `fixtures/cases/a-it-support-nb/cv.pdf`.
-3. Paste the content of `fixtures/cases/a-it-support-nb/posting.txt` into the posting field.
-4. Click **Analyser**.
+1. Log in and click **New analysis**.
+2. Upload `fixtures/cases/a-it-support/cv.pdf`.
+3. Paste the content of `fixtures/cases/a-it-support/posting.txt` into the posting field.
+4. Click **Analyse**.
+5. On the result page, click a requirement in the list on the left to see the reasoning, the next step and the matching text from your CV and the posting.
 
-| Case | Language | Expected missing qualifications |
+| Case | Notes | Expected missing qualifications |
 |---|---|---|
-| `a-it-support-nb` | Norwegian | Intune/Azure, ITIL, driver's licence |
-| `b-data-analyst-en` | English | Python (pandas), shipping/seafood knowledge, cloud data platforms |
-| `c-markedsforing-nb` | Norwegian (two-column PDF) | Google Ads/Meta, video editing, newsletters/Mailchimp |
+| `a-it-support` | IT student, summer job | Intune/Azure, ITIL, driver's licence |
+| `b-data-analyst` | Logistics student, data internship | Python (pandas), shipping/seafood knowledge, cloud data platforms |
+| `c-marketing` | Business student, two-column PDF | Google Ads/Meta, video editing, newsletters/Mailchimp |
 
 The expected results are also in each case's `expected.json`.
 
@@ -144,6 +145,6 @@ Do this if you change `ENCRYPTION_KEY`, or if you want to get rid of all test da
 | Errors decrypting existing data after changing `ENCRYPTION_KEY` | Step 9: start over with an empty database. |
 | Port 3000 already in use | Next.js picks the next free port and prints it, or stop the other process. |
 | `npm install` fails building `better-sqlite3` | Use a Node LTS version. On macOS run `xcode-select --install`; on Windows install the "Desktop development with C++" build tools. |
-| "API-nøkkelen ble avvist" / API key rejected | Check `ANTHROPIC_API_KEY` in `.env` (no spaces or quotes inside the key) and restart. |
-| "Anthropic-kontoen er tom for kreditt" / out of credit | Add credit under Billing in the Anthropic console. |
-| "Fant nesten ingen tekst i filen" / no text in the file | The PDF is probably a scanned image. Export the CV as a text PDF, or save it as `.txt`. |
+| "The API key was rejected" | Check `ANTHROPIC_API_KEY` in `.env` (no spaces or quotes inside the key) and restart. |
+| "The Anthropic account is out of credit" | Add credit under Billing in the Anthropic console. |
+| "Found almost no text in the file" | The PDF is probably a scanned image. Export the CV as a text PDF, or save it as `.txt`. |

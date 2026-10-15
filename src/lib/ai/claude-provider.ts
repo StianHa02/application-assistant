@@ -8,8 +8,10 @@ import {
   coverLetterUserPrompt,
   GAP_ANALYSIS_SYSTEM,
   gapAnalysisUserPrompt,
+  REWRITE_PARAGRAPH_SYSTEM,
+  rewriteParagraphUserPrompt,
 } from "@/lib/ai/prompts";
-import { CoverLetterSchema, GapAnalysisSchema } from "@/lib/ai/schemas";
+import { CoverLetterParagraphSchema, CoverLetterSchema, GapAnalysisSchema } from "@/lib/ai/schemas";
 import type { AiProvider } from "@/lib/ai/types";
 
 // The only file that talks to the Anthropic API.
@@ -68,6 +70,12 @@ export function createClaudeProvider(
     analyzeGap: (input) => call(GAP_ANALYSIS_SYSTEM, gapAnalysisUserPrompt(input), GapAnalysisSchema),
     writeCoverLetter: (input, gap) =>
       call(COVER_LETTER_SYSTEM, coverLetterUserPrompt(input, gap), CoverLetterSchema),
+    rewriteParagraph: (input, gap, letter, index) =>
+      call(
+        REWRITE_PARAGRAPH_SYSTEM,
+        rewriteParagraphUserPrompt(input, gap, letter, index),
+        CoverLetterParagraphSchema,
+      ),
   };
 }
 

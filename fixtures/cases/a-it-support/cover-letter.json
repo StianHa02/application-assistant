@@ -1,0 +1,24 @@
+{
+  "paragraphs": [
+    {
+      "text": "I am applying for the summer job in IT support at Nordvik Kraft AS. I am in my second year of a bachelor's in IT and Information Systems at Molde University College, and I would like to spend the summer helping users in an IT department.",
+      "rationale": "The opening names the position and the company, and links your degree directly to the first requirement.",
+      "linkedRequirements": ["Studies IT, computer science or a similar field"]
+    },
+    {
+      "text": "Alongside my studies I work as a customer service assistant at Elkjøp Molde. There I help customers set up routers and troubleshoot Wi-Fi, and I am used to explaining technical things simply. As a summer temp at the service centre in Molde Municipality, I answered enquiries by phone and email, so user support across several channels is familiar to me.",
+      "rationale": "This is your strongest evidence for user support and networking. The paragraph uses concrete tasks from your CV rather than general qualities.",
+      "linkedRequirements": ["Has experience with customer service or user support", "Has basic knowledge of networking"]
+    },
+    {
+      "text": "I use Windows and Microsoft 365 every day and have programmed in Python during my studies, including a group project where we built an equipment lending system with Flask and SQLite. I haven't worked with Intune or Azure yet, but I am happy to learn the tools you use, and I would like to write scripts that save the department routine work.",
+      "rationale": "Covers the tool and scripting requirements honestly: Python is documented, while Intune and Azure are presented as something you want to learn, not something you know.",
+      "linkedRequirements": ["Knows Windows and Microsoft 365", "Can write simple scripts, for example in PowerShell or Python", "Experience with Microsoft Intune or Azure"]
+    },
+    {
+      "text": "I am available for the whole period from week 25 to 32 and would be glad to come for an interview. Thank you for considering my application.",
+      "rationale": "A short closing that confirms you can work the full period the posting gives.",
+      "linkedRequirements": []
+    }
+  ]
+}

@@ -1,23 +1,22 @@
 import type { Metadata } from "next";
 
 import { NewAnalysisForm } from "@/components/analysis/new-analysis-form";
-import { getI18n } from "@/i18n/server";
-import { isDemoMode } from "@/lib/ai";
+import { getAiProvider } from "@/lib/ai";
 import { requireUser } from "@/lib/auth";
 
-export const metadata: Metadata = { title: "Ny analyse" };
+export const metadata: Metadata = { title: "New analysis" };
 
 export default async function NewAnalysisPage() {
   await requireUser();
-  const { t } = await getI18n();
+  const provider = getAiProvider();
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">{t.newAnalysis.title}</h1>
-        <p className="text-muted-foreground">{t.newAnalysis.subtitle}</p>
+        <h1 className="text-4xl font-extrabold">New analysis</h1>
+        <p className="mt-1 text-muted-foreground">Upload your CV and paste the job posting you want to apply for.</p>
       </div>
-      <NewAnalysisForm demoMode={isDemoMode()} />
+      <NewAnalysisForm demoMode={provider.name === "mock"} model={provider.model} />
     </div>
   );
 }

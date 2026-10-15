@@ -11,11 +11,10 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { createClaudeProvider, DEFAULT_MODEL } from "../src/lib/ai/claude-provider";
-import type { Language, Tone } from "../src/lib/ai/schemas";
+import type { Tone } from "../src/lib/ai/schemas";
 import { computeCoverage, evidenceFound } from "../src/lib/analysis";
 
 type Expected = {
-  language: Language;
   tone: Tone;
   expectedMissing: { label: string; keywords: string[] }[];
   expectedCovered: { label: string; keywords: string[] }[];
@@ -50,7 +49,6 @@ async function main() {
       cvText,
       posting: read("posting.txt"),
       keywords: [],
-      language: expected.language,
       tone: expected.tone,
     });
     const seconds = ((Date.now() - started) / 1000).toFixed(1);

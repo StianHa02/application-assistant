@@ -14,7 +14,7 @@ import { db } from "@/lib/db";
 import { CvParseError, type CvParseErrorCode, parseCv } from "@/lib/parse-cv";
 import { deleteSession } from "@/lib/session";
 
-// Error values are keys into t.newAnalysis.errors (form) or t.aiErrors (AI), translated in the UI.
+// Error values are codes; src/lib/messages.ts turns them into user-facing messages.
 export type CreateAnalysisState =
   | { error?: { kind: "form"; key: CvParseErrorCode | "postingShort" | "postingLong" } | { kind: "ai"; key: AiErrorCode } }
   | undefined;
@@ -22,7 +22,6 @@ export type CreateAnalysisState =
 const SettingsSchema = z.object({
   posting: z.string().trim().min(50, "postingShort").max(20000, "postingLong"),
   keywords: z.string().max(500).default(""),
-  language: z.enum(["nb", "en"]),
   tone: z.enum(["formal", "conversational"]),
 });
 
@@ -32,7 +31,6 @@ export async function createAnalysis(_prev: CreateAnalysisState, formData: FormD
   const settings = SettingsSchema.safeParse({
     posting: formData.get("posting") ?? "",
     keywords: formData.get("keywords") ?? "",
-    language: formData.get("language"),
     tone: formData.get("tone"),
   });
   if (!settings.success) {
@@ -57,7 +55,6 @@ export async function createAnalysis(_prev: CreateAnalysisState, formData: FormD
       .split(",")
       .map((k) => k.trim())
       .filter(Boolean),
-    language: settings.data.language,
     tone: settings.data.tone,
   };
 
@@ -78,7 +75,7 @@ export async function createAnalysis(_prev: CreateAnalysisState, formData: FormD
       cvTextEnc: encrypt(input.cvText),
       postingEnc: encrypt(input.posting),
       keywordsEnc: encrypt(JSON.stringify(input.keywords)),
-      language: input.language,
+      language: "en", // the app is English-only; column kept for older rows
       tone: input.tone,
       gapAnalysisEnc: encryptJson(gapAnalysis),
       provider: provider.name,
@@ -106,7 +103,6 @@ export async function generateCoverLetter(analysisId: string): Promise<CoverLett
         cvText: analysis.cvText,
         posting: analysis.posting,
         keywords: analysis.keywords,
-        language: analysis.language,
         tone: analysis.tone,
       },
       analysis.gapAnalysis,
@@ -114,6 +110,42 @@ export async function generateCoverLetter(analysisId: string): Promise<CoverLett
     await db.analysis.update({
       where: { id: analysis.id, userId: user.id },
       data: { coverLetterEnc: encryptJson(letter) },
+    });
+  } catch (error) {
+    if (error instanceof AiError) return { error: error.code };
+    throw error;
+  }
+
+  revalidatePath(`/analyses/${analysisId}`);
+  return {};
+}
+
+/** Rewrites one paragraph of the stored cover letter and leaves the others unchanged. */
+export async function rewriteParagraph(analysisId: string, index: number): Promise<CoverLetterState> {
+  const user = await requireUser();
+  const analysis = await getAnalysis(user.id, analysisId);
+  const letter = analysis?.coverLetter;
+  if (!analysis || !analysis.gapAnalysis || !letter || !Number.isInteger(index) || !letter.paragraphs[index]) {
+    return { error: "unknown" };
+  }
+
+  const provider = getAiProvider();
+  try {
+    const paragraph = await provider.rewriteParagraph(
+      {
+        cvText: analysis.cvText,
+        posting: analysis.posting,
+        keywords: analysis.keywords,
+        tone: analysis.tone,
+      },
+      analysis.gapAnalysis,
+      letter,
+      index,
+    );
+    const paragraphs = letter.paragraphs.map((p, i) => (i === index ? paragraph : p));
+    await db.analysis.update({
+      where: { id: analysis.id, userId: user.id },
+      data: { coverLetterEnc: encryptJson({ paragraphs }) },
     });
   } catch (error) {
     if (error instanceof AiError) return { error: error.code };

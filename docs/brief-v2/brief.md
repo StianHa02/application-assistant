@@ -38,22 +38,22 @@ Studenter som søker på praksisplasser og jobber, møter den samme friksjonen g
 ### Kjerneflyten (v1)
 
 1. **Logg inn.** Studenten oppretter en konto (lagres bare lokalt) eller bruker demobrukeren.
-2. **Last opp CV og lim inn annonsen.** CV-en lastes opp som PDF eller TXT, og annonsen limes inn som tekst. Studenten velger språk (norsk/engelsk) og tone (formell / personlig og profesjonell), og kan legge til nøkkelord hun vil fremheve.
-3. **Se gap-analysen.** Skjermen viser tre kolonner: CV-en til venstre, kravene i midten og annonsen til høyre. Hvert krav har:
+2. **Last opp CV og lim inn annonsen.** CV-en lastes opp som PDF eller TXT, og annonsen limes inn som tekst. Studenten velger tone (formell / personlig og profesjonell), og kan legge til nøkkelord hun vil fremheve.
+3. **Se gap-analysen.** Til venstre står en kompakt liste over kravene i annonsen, gruppert i «Missing», «Partial» og «Covered». Til høyre vises detaljene for kravet studenten har valgt. Hvert krav har:
    - status: dekket, delvis eller mangler;
    - type: må-krav eller fint å ha;
    - et ordrett sitat fra CV-en;
    - en begrunnelse og et neste steg.
 
-   Klikker studenten på et krav, markeres sitatet i CV-en og kravet i annonsen. Under kolonnene forklares hvordan et ATS vil lese CV-en, med konkrete forslag til bedre formuleringer.
-4. **Få forslag til søknadsbrev.** Forslagene kommer avsnitt for avsnitt, hvert med en begrunnelse og hvilke krav det treffer. Studenten velger «Ta med» på avsnittene hun vil bruke, og kopierer utkastet.
+   Detaljpanelet viser begrunnelsen, neste steg og et utdrag av CV-en der sitatet er markert. Hele CV-en og annonsen kan åpnes i et sidepanel. En egen fane forklarer hvordan et ATS vil lese CV-en, med konkrete forslag til bedre formuleringer.
+4. **Få forslag til søknadsbrev.** Forslagene kommer avsnitt for avsnitt, hvert med en begrunnelse og hvilke krav det treffer. Studenten velger «Use» på avsnittene hun vil bruke, kan be om en ny versjon av ett enkelt avsnitt med «Rewrite», og kopierer utkastet.
 5. **Behold kontrollen over dataene.** Tidligere analyser ligger under «Mine analyser». Studenten kan slette én analyse, alle analysene eller hele kontoen.
 
 ### Data inn og ut
 
 | | v1 | Senere trinn |
 |---|---|---|
-| **Inn** | CV (PDF/TXT), stillingsannonse (innlimt tekst), nøkkelord, tone, språk | CV som DOC/DOCX, annonse som lenke, tidligere søknader |
+| **Inn** | CV (PDF/TXT), stillingsannonse (innlimt tekst), nøkkelord, tone | CV som DOC/DOCX, annonse som lenke, tidligere søknader |
 | **Ut** | Gap-analyse med begrunnelse, sitat og neste steg; ATS-tilbakemelding og formuleringsforslag (del av gap-analysen); søknadsbrev i forslagsmodus | Fullstendig omskriving, PDF-eksport av søknadsbrevet |
 
 **CV-forbedringsforslag** fra oppgaveteksten leveres som «neste steg» per krav og som formuleringsforslag i ATS-delen, ikke som en egen modul.
@@ -105,7 +105,7 @@ ATS-nøkkelordscoring er i dag en hygienefaktor (JobScan, Rezi, Teal, Kickresume
 **Primærbruker:** en bachelorstudent ved Høgskolen i Molde som søker sommerjobb eller praksisplass. Hun har en CV og en konkret annonse, og vil ha hjelp til å tilpasse søknaden, ikke en søknad skrevet fra bunnen av. Testcasene i repoet er bygget rundt denne brukeren:
 
 - en IT-student som søker IT-support;
-- en logistikkstudent som søker praksis som dataanalytiker (på engelsk);
+- en logistikkstudent som søker praksis som dataanalytiker;
 - en økonomistudent som søker praksis i markedsføring.
 
 **Suksess for brukeren:**
@@ -119,11 +119,11 @@ Alle kriteriene kan sjekkes eller testes. Kolonnen «Verifisering» viser hvorda
 
 | # | Kriterium | Verifisering |
 |---|---|---|
-| 1 | For hvert av de tre testsettene (A, B, C) finner gap-analysen nøyaktig de manglende kvalifikasjonene som er bestemt på forhånd i `expected.json`. For testsett A er det Intune/Azure, ITIL og førerkort. | `npm run eval` mot ekte modell. **Bestått 2026-10-15 med `claude-haiku-5-5`: 18/18 sjekker.** Alle forventede mangler og styrker ble funnet i alle tre testsettene, og alle 18 sitater fantes i CV-ene. Strukturen sjekkes automatisk i demo-modus. |
+| 1 | For hvert av de tre testsettene (A, B, C) finner gap-analysen nøyaktig de manglende kvalifikasjonene som er bestemt på forhånd i `expected.json`. For testsett A er det Intune/Azure, ITIL og førerkort. Testsettene er på engelsk. | `npm run eval` mot ekte modell (`claude-haiku-5-5`). **De engelske testsettene, 2026-10-15:** A og C besto 6/6. B besto 6/6 i to av tre kjøringer; i én kjøring vurderte modellen «shipping/seafood-kunnskap» som delvis dekket (logistikkstudiet er beslektet) i stedet for manglende. Alle sitater fantes i CV-ene. Strukturen sjekkes automatisk i demo-modus. |
 | 2 | Hvert krav i gap-analysen har status, type, begrunnelse og neste steg, og hvert krav med status dekket eller delvis har et sitat fra CV-en. | Skjemavalidering (Zod) og enhetstester |
 | 3 | Hvert sitat sjekkes mot CV-teksten, og sitater som ikke finnes, markeres i grensesnittet. | Enhetstester |
 | 4 | Dekningsgraden regnes ut av appen og er lik for samme analyse hver gang. | Enhetstester |
-| 5 | En ugyldig fil (feil filtype, over 5 MB, skannet PDF uten tekst eller ødelagt PDF) gir en forståelig feilmelding på valgt språk. | Enhetstester og ende-til-ende-test |
+| 5 | En ugyldig fil (feil filtype, over 5 MB, skannet PDF uten tekst eller ødelagt PDF) gir en forståelig feilmelding. | Enhetstester og ende-til-ende-test |
 | 6 | CV-er som PDF (også med to kolonner) og TXT leses riktig. | Enhetstester på fiktive CV-er |
 | 7 | En bruker kan slette alle analysene sine og hele kontoen. Etterpå finnes ingen data igjen. | Integrasjonstest og ende-til-ende-test |
 | 8 | CV-tekst er ikke lesbar i databasen. | Integrasjonstest som leser rå databaserad |
@@ -138,7 +138,7 @@ Alle kriteriene kan sjekkes eller testes. Kolonnen «Verifisering» viser hvorda
 - CV som PDF/TXT og annonse som innlimt tekst;
 - gap-analyse med begrunnelse, sitat, neste steg og ATS-tilbakemelding;
 - søknadsbrev i forslagsmodus;
-- norsk og engelsk (grensesnitt og KI-svar) og valg av tone;
+- engelsk grensesnitt og engelske KI-svar, og valg av tone;
 - demo-modus;
 - sletting av data.
 
@@ -160,7 +160,7 @@ Alle kriteriene kan sjekkes eller testes. Kolonnen «Verifisering» viser hvorda
 |---|---|
 | Omskriving vs. forslag | Forslagsmodus. Studenten velger avsnitt selv. Fullstendig omskriving kommer i et senere trinn. |
 | Filformat | Inn: PDF og TXT. Ut: visning i appen og kopiering. PDF-eksport kommer i et senere trinn. |
-| Språk og stilnivå | Norsk og engelsk. Tonen kan være formell eller personlig og profesjonell. |
+| Språk og stilnivå | Engelsk (grensesnitt og KI-svar). Tonen kan være formell eller personlig og profesjonell. |
 
 ## Vision
 
@@ -179,7 +179,7 @@ Ved Høgskolen i Molde er et verktøy som er ærlig om hva KI-screening faktisk 
 | Velg én kjerneflyt for v1 og flytt resten til senere trinn | Ny kjerneflyt i fem steg. Scope er delt i v1, senere trinn (prioritert) og utenfor. |
 | Plan for språkmodell, kostnad og hvordan sensor kjører appen uten nøkkel | Ny seksjon «Språkmodell, kostnad og demo-modus» |
 | Testbare suksesskriterier, og fjern `[ASSUMPTION]` | 11 testbare kriterier med verifisering. Alle `[ASSUMPTION]`-merker er avklart og fjernet. |
-| Beskriv hva studenten gjør steg for steg og ser på skjermen | Kjerneflyten beskriver skjermbildet med tre kolonner. |
+| Beskriv hva studenten gjør steg for steg og ser på skjermen | Kjerneflyten beskriver skjermbildet: kravliste til venstre og detaljpanel til høyre. |
 | Velg en konkret primærbruker | Bachelorstudent ved HiMolde som søker sommerjobb eller praksisplass |
 | ATS som del av gap-analysen, ikke egen modul med egen poengsum | ATS-tilbakemelding og formuleringsforslag er en del av gap-analysen. Dekningsgraden regnes ut av appen. |
 | Annonse som lenke, DOC, tidligere søknader, omskriving og PDF-eksport flyttes ut av v1 | Flyttet til senere trinn |
@@ -189,4 +189,4 @@ Ved Høgskolen i Molde er et verktøy som er ærlig om hva KI-screening faktisk 
 | `.env.example`, demo-modus og testbruker | På plass. Demobruker `demo@example.com` / `demo1234`. |
 | Bare fiktive CV-er i repoet, og nøkler i `.env` som ikke committes | Gjennomført |
 
-**Avvik fra tilbakemeldingen:** faglærer foreslo ett språk i v1. Gruppen har valgt både norsk og engelsk fordi målgruppen søker stillinger på begge språk, og fordi språkvalget bare påvirker grensesnittekstene og én linje i promptene.
+**Språk:** faglærer foreslo ett språk i v1. Appen er nå bare på engelsk, både grensesnitt og KI-svar. Studenter kan fortsatt lime inn norske annonser og CV-er; sitatene fra CV-en vises da på originalspråket.

@@ -9,12 +9,11 @@ import type { AnalysisInput } from "@/lib/ai/schemas";
 
 // Tests the Claude provider without network or API key: a fake fetch returns canned API responses.
 
-const CASE = path.join(process.cwd(), "fixtures", "cases", "a-it-support-nb");
+const CASE = path.join(process.cwd(), "fixtures", "cases", "a-it-support");
 const input: AnalysisInput = {
   cvText: readFileSync(path.join(CASE, "cv.txt"), "utf8"),
   posting: readFileSync(path.join(CASE, "posting.txt"), "utf8"),
   keywords: ["Python"],
-  language: "nb",
   tone: "formal",
 };
 const gapJson = readFileSync(path.join(CASE, "gap-analysis.json"), "utf8");
@@ -61,7 +60,7 @@ describe("Claude provider", () => {
     expect(Object.keys(request.output_config.format.schema.properties)).toEqual(["summary", "requirements", "atsRelevance"]);
     expect(request.system).toContain("word for word");
     expect(request.messages[0].content).toContain("<cv>");
-    expect(request.messages[0].content).toContain("Norwegian");
+    expect(request.messages[0].content).toContain("in English");
     expect(request.messages[0].content).toContain("Python");
   });
 
@@ -92,6 +91,18 @@ describe("Claude provider", () => {
     const result = await provider.writeCoverLetter(input, JSON.parse(gapJson));
     expect(result.paragraphs).toHaveLength(4);
     expect((api.requests[0] as { messages: { content: string }[] }).messages[0].content).toContain("<gap_analysis>");
+  });
+
+  it("rewrites one paragraph, sending the whole letter and marking which paragraph to rewrite", async () => {
+    const letter = JSON.parse(readFileSync(path.join(CASE, "cover-letter.json"), "utf8"));
+    const paragraph = { text: "A new opening.", rationale: "Different angle.", linkedRequirements: [] };
+    const api = fakeApi(200, message(JSON.stringify(paragraph)));
+    const provider = createClaudeProvider("test-key", undefined, { fetch: api.fetch, maxRetries: 0 });
+    const result = await provider.rewriteParagraph(input, JSON.parse(gapJson), letter, 1);
+    expect(result).toEqual(paragraph);
+    const prompt = (api.requests[0] as { messages: { content: string }[] }).messages[0].content;
+    expect(prompt).toContain('<paragraph number="2" rewrite="true">');
+    expect(prompt).toContain(`Rewrite paragraph 2 of ${letter.paragraphs.length}.`);
   });
 });
 
