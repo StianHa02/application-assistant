@@ -1,0 +1,97 @@
+{
+  "summary": "Your CV shows strong, practical Excel work and a real example of explaining data to non-technical people, which is the heart of this role. The main gap is Python (pandas), a must-have you don't document. Power BI is only partly covered by your Excel dashboard, and industry knowledge and cloud platforms are missing but only nice to have.",
+  "requirements": [
+    {
+      "requirement": "Ongoing bachelor or master degree in a quantitative field",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Bachelor in Logistics and Supply Chain Management, Molde University College",
+      "reasoning": "Logistics is explicitly listed in the posting as a qualifying field, and your courses include statistics and operations analysis.",
+      "nextStep": "Mention Operations Analysis and Introduction to Statistics in the letter to show the quantitative side of your degree."
+    },
+    {
+      "requirement": "Experience with Excel",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Built an Excel dashboard with pivot tables to track daily picking errors",
+      "reasoning": "You have used Excel at work for a real reporting task, and your skills list advanced functions.",
+      "nextStep": "Keep this bullet near the top of your experience section, since it matches two parts of the job."
+    },
+    {
+      "requirement": "Experience with Python (pandas) for data analysis",
+      "type": "must",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Python and pandas don't appear anywhere in the CV. This is a stated requirement, so it's the biggest gap.",
+      "nextStep": "If there is time before applying, redo your picking-error analysis in pandas (for example with a free Kaggle course) and add it as a project. Otherwise say honestly that you are learning Python."
+    },
+    {
+      "requirement": "Experience with Power BI or a similar BI tool",
+      "type": "must",
+      "status": "partial",
+      "cvEvidence": "Built an Excel dashboard with pivot tables",
+      "reasoning": "An Excel dashboard shows the same skill (turning data into a visual report), but Excel is not a BI tool like Power BI.",
+      "nextStep": "Power BI Desktop is free. Rebuilding your Excel dashboard in it would turn this into a covered requirement."
+    },
+    {
+      "requirement": "Good communication skills in English",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "English (fluent)",
+      "reasoning": "You list fluent English and took Business English.",
+      "nextStep": "Your cover letter in English is the best proof, so keep it clear and error-free."
+    },
+    {
+      "requirement": "Ability to explain results to non-technical people",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Reduced picking errors by 15% by presenting weekly findings to the shift leaders",
+      "reasoning": "This is a concrete, measurable example of presenting data to non-technical colleagues, with a result.",
+      "nextStep": "Use this example in your cover letter, since it shows both analysis and impact."
+    },
+    {
+      "requirement": "SQL",
+      "type": "nice",
+      "status": "partial",
+      "cvEvidence": "basic SQL from an online course",
+      "reasoning": "You have some SQL, but only from a course and not used in a project or job.",
+      "nextStep": "If you've written any real queries, name the course and what you did. A small SQL exercise on your warehouse data would strengthen this."
+    },
+    {
+      "requirement": "Knowledge of the shipping or seafood industry",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Your logistics background is related, but the CV doesn't mention shipping or seafood.",
+      "nextStep": "Supply chain planning is relevant to shipping. Connect your logistics studies to their customers' industry in the letter, without claiming direct experience."
+    },
+    {
+      "requirement": "Experience with cloud data platforms such as Azure or Databricks",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "No cloud or data platform experience is mentioned.",
+      "nextStep": "This is nice to have for an intern. There's no need to address it unless asked."
+    }
+  ],
+  "atsRelevance": {
+    "summary": "A screening system would match you well on Excel, logistics and communication, but would likely rank you lower for the missing Python requirement. Your CV uses warehouse language (\"picking errors\", \"shift leaders\") where the posting talks about \"datasets\", \"reports\" and \"dashboards\". Using the posting's terms for what you actually did makes the relevance clearer to both software and recruiters.",
+    "phrasingSuggestions": [
+      {
+        "original": "Built an Excel dashboard with pivot tables to track daily picking errors",
+        "suggested": "Built an Excel dashboard and weekly reports (pivot tables, charts) to track daily picking errors",
+        "why": "The posting lists \"Build reports and dashboards\" as a core task."
+      },
+      {
+        "original": "Reduced picking errors by 15% by presenting weekly findings to the shift leaders",
+        "suggested": "Presented weekly data findings to non-technical shift leaders, helping reduce picking errors by 15%",
+        "why": "Uses the posting's phrase \"non-technical\" and leads with the presenting skill they ask for."
+      },
+      {
+        "original": "Forecasting demand for spare parts using historical sales data in Excel",
+        "suggested": "Cleaning and analysing historical sales data in Excel to forecast demand for spare parts",
+        "why": "Mentions cleaning and preparing data, the first task in the posting."
+      }
+    ]
+  }
+}

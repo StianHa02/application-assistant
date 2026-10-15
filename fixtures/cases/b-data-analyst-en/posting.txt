@@ -1,0 +1,22 @@
+Summer Internship 2027 – Junior Data Analyst
+Fjordline Analytics AS, Ålesund
+
+Fjordline Analytics helps shipping and seafood companies make better decisions with data. We are looking for a curious student to join our analytics team for ten weeks next summer.
+
+What you will do:
+- Clean and prepare datasets from our customers
+- Build reports and dashboards
+- Present findings to customers together with a senior analyst
+
+Requirements:
+- Ongoing bachelor or master degree in a quantitative field (statistics, economics, logistics, computer science or similar)
+- Experience with Excel
+- Experience with Python (pandas) for data analysis
+- Experience with Power BI or a similar BI tool
+- Good communication skills in English
+- Ability to explain results to non-technical people
+
+Nice to have:
+- SQL
+- Knowledge of the shipping or seafood industry
+- Experience with cloud data platforms such as Azure or Databricks

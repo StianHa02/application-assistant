@@ -1,0 +1,23 @@
+Jonas Berg
+jonas.berg@example.com | +47 400 00 002 | Kristiansund
+
+SUMMARY
+Third-year logistics student who enjoys turning messy data into clear decisions. Comfortable with spreadsheets and presenting results to non-technical colleagues.
+
+EDUCATION
+2024–2027 Bachelor in Logistics and Supply Chain Management, Molde University College
+Courses: Operations Analysis, Introduction to Statistics, Supply Chain Planning, Business English
+
+EXPERIENCE
+2025–present Warehouse Assistant (part-time), Nordlys Engros AS
+- Built an Excel dashboard with pivot tables to track daily picking errors
+- Reduced picking errors by 15% by presenting weekly findings to the shift leaders
+
+2023–2024 Cashier, Rema 1000 Kristiansund
+
+PROJECTS
+Bachelor project (ongoing): Forecasting demand for spare parts using historical sales data in Excel
+
+SKILLS
+Microsoft Excel (advanced: pivot tables, XLOOKUP, charts), Microsoft PowerPoint, basic SQL from an online course
+Languages: Norwegian (native), English (fluent)

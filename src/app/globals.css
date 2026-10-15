@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/*
+  Design tokens modelled on echo – Linjeforeningen for informatikk (echo.uib.no,
+  github.com/echo-webkom/echo-web-mono, apps/web/src/styles/globals.css).
+  Teal primary, warm yellow secondary, sand footer, Inter + IBM Plex Mono.
+*/
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-ibm), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-dark: var(--secondary-dark);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-dark: var(--success-dark);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-dark: var(--warning-dark);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-dark: var(--destructive-dark);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-selected: var(--selected);
+
+  --color-footer: var(--footer);
+  --color-footer-border: var(--footer-border);
+  --color-footer-foreground: var(--footer-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  :root {
+    --background: #f9fafb;
+    --foreground: #171923;
+
+    --card: #fefefe;
+    --card-foreground: #171923;
+
+    --muted: #ebeef4;
+    --muted-foreground: #64748b;
+
+    --accent: #ebeef4;
+    --accent-foreground: #0f172a;
+
+    --border: #9db2cd;
+    --input: #f1f5f9;
+    --ring: #94a3b8;
+
+    --primary: #008fa3;
+    --primary-foreground: #f9fafb;
+    --primary-hover: #32a5b5;
+    --primary-dark: #006f83;
+
+    --secondary: #fed879;
+    --secondary-foreground: #171923;
+    --secondary-hover: #ffe195;
+    --secondary-dark: #f9c652;
+
+    --success: #48bb78;
+    --success-foreground: #f9fafb;
+    --success-dark: #2f855a;
+
+    --warning: #f6ad55;
+    --warning-foreground: #171923;
+    --warning-dark: #b7791f;
+
+    --destructive: #e53e3e;
+    --destructive-foreground: #f9fafb;
+    --destructive-hover: #f56565;
+    --destructive-dark: #c53030;
+
+    --info: #3182ce;
+    --info-foreground: #f9fafb;
+
+    --selected: #ffeabb;
+
+    --footer: #f2cc8f;
+    --footer-border: #d4a373;
+    --footer-foreground: #171923;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #151210;
+    --foreground: #eeeeee;
+
+    --card: #171717;
+    --card-foreground: #eeeeee;
+
+    --muted: #181818;
+    --muted-foreground: #999999;
+
+    --accent: #14171a;
+    --accent-foreground: #f9fafb;
+
+    --border: #4d4d4d;
+    --input: #171717;
+
+    --secondary-foreground: #24292e;
+    --warning-foreground: #14171a;
+
+    --selected: #006f83;
+
+    --footer: #171717;
+    --footer-border: #4d4d4d;
+    --footer-foreground: #f9fafb;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+}
+
+/* Highlighted quote in the CV / requirement in the posting on the result page. */
+mark.evidence {
+  background: var(--color-selected);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+  box-shadow: 0 0 0 1px var(--color-secondary-dark);
+}

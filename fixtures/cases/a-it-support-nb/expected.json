@@ -1,0 +1,14 @@
+{
+  "description": "IT-student som søker sommerjobb i IT-support. Dekker de fleste hovedkravene, men mangler tre av «fint om du har»-punktene.",
+  "language": "nb",
+  "tone": "formal",
+  "expectedMissing": [
+    { "label": "Microsoft Intune eller Azure", "keywords": ["intune", "azure"] },
+    { "label": "Kjennskap til ITIL", "keywords": ["itil"] },
+    { "label": "Førerkort klasse B", "keywords": ["førerkort"] }
+  ],
+  "expectedCovered": [
+    { "label": "Studerer IT eller tilsvarende", "keywords": ["studerer it", "informatikk"] },
+    { "label": "Erfaring med kundeservice eller brukerstøtte", "keywords": ["kundeservice"] }
+  ]
+}

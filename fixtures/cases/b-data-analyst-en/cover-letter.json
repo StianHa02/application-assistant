@@ -1,0 +1,24 @@
+{
+  "paragraphs": [
+    {
+      "text": "I'd love to join Fjordline Analytics as a Junior Data Analyst intern next summer. I'm in my third year of a logistics degree at Molde University College, and the part of my studies I enjoy most is turning data into decisions people can act on.",
+      "rationale": "Names the role and company, and connects your degree to the work in a natural, conversational way.",
+      "linkedRequirements": ["Ongoing bachelor or master degree in a quantitative field"]
+    },
+    {
+      "text": "At Nordlys Engros, where I work part-time in the warehouse, I built an Excel dashboard to track daily picking errors. Every week I walked the shift leaders through what the numbers showed, and over time we cut picking errors by 15%. That taught me that a good analysis only matters if the people on the floor understand it.",
+      "rationale": "Your strongest evidence. It covers Excel, dashboards and explaining results to non-technical people in one concrete story with a measurable result.",
+      "linkedRequirements": ["Experience with Excel", "Ability to explain results to non-technical people", "Experience with Power BI or a similar BI tool"]
+    },
+    {
+      "text": "I know Python and pandas are central to your work. I haven't used them in a project yet, and I'm working through an introductory pandas course so I can do the cleaning and preparation tasks you describe. My bachelor project on forecasting spare-part demand has already given me practice in working with messy historical data.",
+      "rationale": "Addresses the biggest gap honestly instead of hiding it, and points to related experience. Only say you are taking a course if that is true.",
+      "linkedRequirements": ["Experience with Python (pandas) for data analysis"]
+    },
+    {
+      "text": "Your customers in shipping and seafood depend on supply chains, which is exactly what I study. I'd be glad to tell you more in an interview.",
+      "rationale": "Links your field to their industry without claiming industry experience you don't have, and closes briefly.",
+      "linkedRequirements": ["Knowledge of the shipping or seafood industry"]
+    }
+  ]
+}

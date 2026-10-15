@@ -1,0 +1,50 @@
+// Database schema for Søknadsassistenten.
+// Personal data (CV text, job posting, AI results) is stored encrypted
+// (AES-256-GCM, see src/lib/crypto.ts). Columns ending in "Enc" hold ciphertext.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  analyses     Analysis[]
+}
+
+model Analysis {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  // Encrypted inputs
+  titleEnc      String // short label shown on the dashboard, e.g. the posting's first line
+  cvFileNameEnc String
+  cvTextEnc     String
+  postingEnc    String
+  keywordsEnc   String
+
+  // Plain settings (not personal data)
+  language String // "nb" | "en"
+  tone     String // "formal" | "conversational"
+
+  // Encrypted AI results (JSON). Null until generated.
+  gapAnalysisEnc String?
+  coverLetterEnc String?
+
+  // Traceability: which provider, model and prompt version produced the results
+  provider      String // "claude" | "mock"
+  model         String
+  promptVersion String
+
+  @@index([userId, createdAt])
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Økonomistudent som søker praksis i markedsføring. Sterk på organisk innhold i sosiale medier, men mangler betalt annonsering, videoredigering og nyhetsbrev.",
+  "language": "nb",
+  "tone": "conversational",
+  "expectedMissing": [
+    { "label": "Google Ads eller Meta-annonsering", "keywords": ["google ads", "meta"] },
+    { "label": "Videoredigering", "keywords": ["video"] },
+    { "label": "Nyhetsbrev / Mailchimp", "keywords": ["nyhetsbrev", "mailchimp"] }
+  ],
+  "expectedCovered": [
+    { "label": "Studerer markedsføring eller økonomi", "keywords": ["studerer markedsføring"] },
+    { "label": "Innhold for sosiale medier", "keywords": ["sosiale medier"] }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "summary": "CV-en matcher godt på hovedkravene: du studerer IT, har kundeserviceerfaring med teknisk veiledning og kjenner Windows og Microsoft 365. Det som mangler er de tre «fint om du har»-punktene (Intune/Azure, ITIL og førerkort), og skripting er bare delvis dokumentert.",
+  "requirements": [
+    {
+      "requirement": "Studerer IT, informatikk eller tilsvarende",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Bachelor i IT og informasjonssystemer, Høgskolen i Molde",
+      "reasoning": "Du er i gang med en bachelor i IT og informasjonssystemer, som er nøyaktig det annonsen ber om.",
+      "nextStep": "Nevn gjerne hvilket år du går og at du er ferdig i 2028, så arbeidsgiver ser at du kan jobbe flere somre."
+    },
+    {
+      "requirement": "Erfaring med kundeservice eller brukerstøtte",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Kundeservicemedarbeider (deltid), Elkjøp Molde",
+      "reasoning": "Deltidsjobben på Elkjøp er kundeservice med tekniske produkter, og ferievikariatet på servicetorget er også direkte kontakt med brukere.",
+      "nextStep": "Bruk ordet «brukerstøtte» om oppgavene der det stemmer, siden det er annonsens eget ord."
+    },
+    {
+      "requirement": "Kjenner Windows og Microsoft 365",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Windows 11, Microsoft 365",
+      "reasoning": "Begge verktøyene står i ferdighetslisten din.",
+      "nextStep": "Gi et konkret eksempel i søknadsbrevet, for eksempel om du har hjulpet kunder med å sette opp Microsoft 365 på Elkjøp."
+    },
+    {
+      "requirement": "Grunnleggende kunnskap om nettverk",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Hjalp kunder med oppsett av ruter og feilsøking av wifi",
+      "reasoning": "Du har praktisk erfaring med ruteroppsett og wifi-feilsøking, og emnet «Nettverk og IT-sikkerhet» støtter det teoretisk.",
+      "nextStep": "Skriv «feilsøking av nettverk» i stedet for bare «wifi», så samsvarer formuleringen med arbeidsoppgavene i annonsen."
+    },
+    {
+      "requirement": "Kan skrive enkle skript, for eksempel i PowerShell eller Python",
+      "type": "must",
+      "status": "partial",
+      "cvEvidence": "Laget en webapplikasjon i Python (Flask) med SQLite-database",
+      "reasoning": "Du kan Python, men CV-en viser bare programmering i et studieprosjekt, ikke skript som automatiserer oppgaver. PowerShell er ikke nevnt.",
+      "nextStep": "Har du skrevet et lite skript for å automatisere noe (for eksempel rydde filer eller hente data), legg det til under Prosjekter. Et kort PowerShell-kurs før sommeren vil også styrke søknaden."
+    },
+    {
+      "requirement": "Gode norskkunnskaper, muntlig og skriftlig",
+      "type": "must",
+      "status": "covered",
+      "cvEvidence": "Norsk (morsmål)",
+      "reasoning": "Norsk er morsmålet ditt.",
+      "nextStep": "Ingen endring nødvendig. Et godt skrevet søknadsbrev viser de skriftlige ferdighetene."
+    },
+    {
+      "requirement": "Erfaring med Microsoft Intune eller Azure",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Verken Intune, Azure eller annen enhets- eller skyadministrasjon er nevnt i CV-en.",
+      "nextStep": "Microsoft Learn har gratis introduksjonsmoduler om Intune og Azure. Nevn i søknaden at du har begynt på dem, men ikke skriv at du kan det før du har gjort det."
+    },
+    {
+      "requirement": "Kjennskap til ITIL",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "ITIL er ikke nevnt, og ingen av emnene i CV-en dekker IT-tjenestestyring direkte.",
+      "nextStep": "Les en kort innføring i ITIL-begrepene hendelse, problem og endring, så kan du vise til det i et intervju. Det er sjelden et absolutt krav for en sommerjobb."
+    },
+    {
+      "requirement": "Førerkort klasse B",
+      "type": "nice",
+      "status": "missing",
+      "cvEvidence": null,
+      "reasoning": "Førerkort er ikke nevnt i CV-en.",
+      "nextStep": "Har du førerkort, legg det til øverst eller under Annet. Har du det ikke, trenger du ikke nevne det."
+    }
+  ],
+  "atsRelevance": {
+    "summary": "Et ATS vil finne gode treff på utdanning, Windows, Microsoft 365 og Python. Svakheten er at CV-en beskriver oppgavene med andre ord enn annonsen («veiledet kunder», «wifi») der annonsen sier «brukerstøtte» og «feilsøking av nettverk». Moderne systemer forstår en del synonymer, men det hjelper å bruke annonsens begreper der de beskriver det du faktisk har gjort.",
+    "phrasingSuggestions": [
+      {
+        "original": "Veiledet kunder i valg av PC, mobil og nettverksutstyr",
+        "suggested": "Brukerstøtte og veiledning av kunder om PC, mobil og nettverksutstyr",
+        "why": "Annonsen nevner «brukerstøtte» både under oppgaver og krav."
+      },
+      {
+        "original": "Hjalp kunder med oppsett av ruter og feilsøking av wifi",
+        "suggested": "Feilsøking av nettverk og oppsett av rutere for kunder",
+        "why": "Speiler arbeidsoppgaven «Feilsøking av nettverk og skrivere»."
+      },
+      {
+        "original": "Svarte på henvendelser fra innbyggere på telefon og e-post",
+        "suggested": "Brukerstøtte på telefon og e-post for innbyggere",
+        "why": "Annonsen ber om brukerstøtte på telefon og chat, og dette viser at du har gjort nettopp det."
+      }
+    ]
+  }
+}
